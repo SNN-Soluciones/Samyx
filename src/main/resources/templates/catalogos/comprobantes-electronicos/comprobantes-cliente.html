@@ -83,18 +83,15 @@
                                          <td th:text="${k.tipoDocumento}"></td>
                                          <td th:text="${k.clave}"></td>
 
-                                         <td>
-                                         	<span th:remove="tag" th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision)>8}">
-                                         		<!-- ✅ CORRECTO - Usar #dates directamente -->
-<span class="fecha-caducidad-criptografica">
-    <p th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
-</span>
-												    <p th:remove="tag" th:text="${#dates.format(sdf.parse(k.fechaEmision), 'dd/MM/yyyy hh:mm:ss a')}"></p>
-												 </th:block>
-                                         	</span>
-                                         </td>  
-                                         
-                                         <td><a th:href="${urlApiDownloadDocs} + ${k.identificacion} +'/'+ ${k.nameXmlSign} +'.xml'">
+
+																			 <td>
+																				<span th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision) > 8}">
+																						<!-- Usar #temporals para parsear fechas ISO -->
+																						<p th:text="${#dates.format(k.fechaEmision, 'dd/MM/yyyy')}"></p>
+																				</span>
+																			 </td>
+
+																			 <td><a th:href="${urlApiDownloadDocs} + ${k.identificacion} +'/'+ ${k.nameXmlSign} +'.xml'">
                                          	<i class="fas fa-cloud-download-alt"></i> Descargar</a>
                                          </td>  
                                          <td><a th:if="${k.nameXmlAcceptacion != null and #strings.length(k.nameXmlAcceptacion)>0}" th:href="${urlApiDownloadDocs} + ${k.identificacion} +'/'+ ${k.nameXmlAcceptacion}">

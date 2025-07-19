@@ -46,15 +46,11 @@
 	        		<li class="list-group-item item-emisor-inicio"><span class="font-weight-bold">[(#{txt.correo})]: </span> [(${k.emisor.email})]</li>
 	        		<li th:if="${k.emisor.fechaCaducidadCert != null and #strings.length(k.emisor.fechaCaducidadCert)>0}" class="list-group-item item-emisor-inicio"><span class="font-weight-bold">Fecha caducidad llave criptográfica: </span>
 	        			
-	        			<span class="fecha-caducidad-criptografica" >
                              <!-- ✅ CORRECTO - Usar #dates directamente -->
-<span class="fecha-caducidad-criptografica">
-    <p th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
-</span>
-								<p th:remove="tag" th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
-							 </th:block>
-                        </span>
-	        		
+									<span class="fecha-caducidad-criptografica">
+											<p th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
+									</span>
+
 	        		</li>
 	        	</ul>
 		        
