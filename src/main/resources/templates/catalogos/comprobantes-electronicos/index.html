@@ -39,7 +39,7 @@
                     	
                     	</div>
 	                    <div class="col-md-4">
-	                    	<form autocomplete="off" th:action="@{/comprobantes-electronicos}" method="get">
+	                    	<form autocomplete="off" th:action="@{/comprobantes-electronicos-api}" method="get">
 		                    	<div class="align-right m-b-10">
 
 			                    	<div class="input-group">
@@ -86,6 +86,17 @@
                                          <td th:text="${k.clave}"></td>
                                          <td th:text="${k.sucursal}+'-'+${k.terminal}"></td>
 
+																			 <!-- Después de la línea con k.sucursal+'-'+k.terminal, agregar: -->
+
+																			 <td>
+    <span th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision) > 8}">
+        <!-- Extraer fecha y hora del string ISO -->
+        <p th:text="${#strings.substring(k.fechaEmision, 8, 10) + '/' + #strings.substring(k.fechaEmision, 5, 7) + '/' + #strings.substring(k.fechaEmision, 0, 4) + ' ' + #strings.substring(k.fechaEmision, 11, 19)}"></p>
+    </span>
+																				 <span th:unless="${k.fechaEmision != null and #strings.length(k.fechaEmision) > 8}">
+        N/A
+    </span>
+																			 </td>
                                          
                                          <td><a th:href="${urlApiDownloadDocs} + ${k.identificacion} +'/'+ ${k.nameXmlSign} +'.xml'">
                                          	<i class="fas fa-cloud-download-alt"></i> Descargar</a>

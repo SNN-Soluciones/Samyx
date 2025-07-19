@@ -28,14 +28,23 @@ public class HandlerErrorController {
     return "error/404"; // Necesitarás crear esta vista
   }
 
-  // Manejar errores de recursos estáticos no encontrados
   @ExceptionHandler(NoResourceFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  public String handleResourceNotFound(NoResourceFoundException e, Model model) {
-    logger.warn("Recurso no encontrado: {}", e.getResourcePath());
-    // No redirigir, solo registrar y devolver 404
+  public String handleResourceNotFound(NoResourceFoundException e, HttpServletRequest request, Model model)
+      throws NoResourceFoundException {
+    String path = e.getResourcePath();
+    logger.warn("Recurso no encontrado: {}", path);
+
+    // Si es una ruta de controlador, dejar que Spring Security maneje
+    if (!path.contains(".") && !path.startsWith("/static/") && !path.startsWith("/css/")
+        && !path.startsWith("/js/")) {
+      logger.info("Posible ruta de controlador no encontrada: {}", path);
+      // No manejar aquí, dejar que Spring Security redirija al login si es necesario
+      throw e;
+    }
+
     model.addAttribute("error", "Recurso no encontrado");
-    model.addAttribute("resource", e.getResourcePath());
+    model.addAttribute("resource", path);
     return "error/404";
   }
 

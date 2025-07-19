@@ -50,11 +50,11 @@ public class ComprobantesElectronicosApiController {
   private String urlApiReenviarXmls;
   
   @Secured({"ROLE_ADMIN"})
-  @GetMapping({"/comprobantes-electronicos"})
+  @GetMapping({"/comprobantes-electronicos-api"})
   public String home(Model model, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "q", defaultValue = "") String q, HttpSession session) {
     PageRequest pageRequest = PageRequest.of(page, 40);
     Page<ComprobantesElectronicos> listaComprobantesElectronicos = this._comprobantesElectronicosService.findAllComprobante(q.toUpperCase(), (Pageable)pageRequest);
-    PageRender<ComprobantesElectronicos> pageRender = new PageRender("/comprobantes-electronicos", listaComprobantesElectronicos);
+    PageRender<ComprobantesElectronicos> pageRender = new PageRender<>("/comprobantes-electronicos-api", listaComprobantesElectronicos);
     model.addAttribute("listaComprobantesElectronicos", listaComprobantesElectronicos);
     model.addAttribute("page", pageRender);
     model.addAttribute("urlApiDownloadDocs", this.urlApiDownloadDocs);

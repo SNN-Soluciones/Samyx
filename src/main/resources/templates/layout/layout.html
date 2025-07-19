@@ -242,7 +242,7 @@
                             	 <li th:if="${session.SESSION_SISTEMA_FARMACIA == 'N'}"><a th:href="@{/facturar/}">Facturar precio final</a></li>
                             	 <li th:if="${session.SESSION_SISTEMA_FARMACIA == 'N'}"><a th:href="@{/prefacturas/}">Prefacturas</a></li>
                             	 <li><a th:href="@{/proformas/}" th:text="'Proformas'"></a></li>
-                            	 <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ROLE_ADMIN')}"><a th:href="@{/comprobantes-electronicos/}">Comprobantes API</a></li>
+                            	 <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ROLE_ADMIN')}"><a th:href="@{/comprobantes-electronicos-api}">Comprobantes API</a></li>
                             	 
                             	 <li><a th:href="@{/comprobantes-electronicos-enviados}">Comprobantes enviados a Hacienda</a></li>
                             	 
