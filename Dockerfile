@@ -9,8 +9,13 @@ RUN apk add --no-cache maven
 # Crear directorio de trabajo
 WORKDIR /app
 
-# Copiar el pom y el código fuente
+# Copiar el pom primero para aprovechar la caché de Docker
 COPY pom.xml .
+
+# Descargar dependencias (se cachea si pom.xml no cambia)
+RUN mvn dependency:go-offline -B
+
+# Copiar el código fuente
 COPY src ./src
 
 # Compilar el proyecto (sin tests)
@@ -33,31 +38,27 @@ RUN apk add --no-cache \
 RUN addgroup -g 1001 -S spring && \
     adduser -S spring -u 1001 -G spring
 
-# Crear directorios necesarios
-RUN mkdir -p /app /home/XmlClientes /app/logs && \
-    chown -R spring:spring /app /home/XmlClientes
-
-# Cambiar a usuario seguro
-USER spring
-
 # Establecer carpeta de trabajo
 WORKDIR /app
 
 # Copiar el .jar generado desde el builder
 COPY --from=builder --chown=spring:spring /app/target/Samyx-1.0-SNAPSHOT.jar app.jar
 
-# Variables de entorno
+# Cambiar a usuario seguro
+USER spring
+
+# Variables de entorno para Digital Ocean
 ENV SPRING_PROFILES_ACTIVE=prod
 ENV SERVER_PORT=8080
-ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:+EnableDynamicAgentLoading"
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
 ENV TZ=America/Costa_Rica
 
 # Exponer puerto
 EXPOSE 8080
 
-# Health check (requiere spring-boot-actuator en el classpath)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+# Health check simplificado
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=5 \
+  CMD curl -f http://localhost:8080/login || exit 1
 
 # Comando de arranque
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
