@@ -4,7 +4,7 @@ import snn.soluciones.com.models.dao.IEmisorActividadesDao;
 import snn.soluciones.com.models.entity.EmisorActividades;
 import snn.soluciones.com.service.interfaces.IEmisorActividadesService;
 import java.util.List;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

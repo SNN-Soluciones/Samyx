@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import snn.soluciones.com.models.entity.CTerminalUsuario;
 
 public interface ICTerminalUsuarioDao extends CrudRepository<CTerminalUsuario, Long> {
-  @Query("SELECT c FROM CTerminalUsuario c JOIN FETCH c.terminal t WHERE t.terminal.sucursal.id = ?1")
+  @Query("SELECT c FROM CTerminalUsuario c JOIN FETCH c.terminal t WHERE t.sucursal.id = ?1")
   List<CTerminalUsuario> findAllBySucursal(Long paramLong);
   
   @Modifying
@@ -20,6 +20,6 @@ public interface ICTerminalUsuarioDao extends CrudRepository<CTerminalUsuario, L
   @Query("SELECT c FROM CTerminalUsuario c JOIN FETCH c.terminal t JOIN FETCH t.sucursal s WHERE s.id=?1 AND c.usuario.id=?2")
   List<CTerminalUsuario> findAllBySucursalByUsuario(Long paramLong1, Long paramLong2);
   
-  @Query("SELECT c FROM CTerminalUsuario c JOIN FETCH c.terminal t JOIN FETCH t.sucursal s WHERE s.id=?1 AND t.terminal.id = ?2 AND c.usuario.id = ?3")
+  @Query("SELECT c FROM CTerminalUsuario c JOIN FETCH c.terminal t JOIN FETCH t.sucursal s WHERE s.id=?1 AND t.id = ?2 AND c.usuario.id = ?3")
   CTerminalUsuario findSucursalTerminalBySucursalByTerminal(Long paramLong1, Long paramLong2, Long paramLong3);
 }

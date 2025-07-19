@@ -4,7 +4,7 @@ import snn.soluciones.com.models.dao.ICTerminalUsuarioDao;
 import snn.soluciones.com.models.entity.CTerminalUsuario;
 import snn.soluciones.com.service.interfaces.ICTerminalUsuarioService;
 import java.util.List;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

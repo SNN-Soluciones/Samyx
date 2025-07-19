@@ -5,7 +5,7 @@ import snn.soluciones.com.models.entity.Emisor;
 import snn.soluciones.com.service.interfaces.IComprobantesElectronicosService;
 import snn.soluciones.com.service.interfaces.IEmisorService;
 import snn.soluciones.com.util.PageRender;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;

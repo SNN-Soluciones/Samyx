@@ -2,7 +2,7 @@ package snn.soluciones.com.service.impl;
 
 import snn.soluciones.com.models.dao.IFEItemFacturaDao;
 import snn.soluciones.com.service.interfaces.IFEItemFacturaService;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

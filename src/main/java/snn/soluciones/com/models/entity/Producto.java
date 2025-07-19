@@ -3,18 +3,18 @@ package snn.soluciones.com.models.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -64,25 +64,25 @@ public class Producto {
   @Column(name = "tipo_venta", length = 1)
   private String tipoVenta;
   
-  @Column(name = "fracciones_por_unidad", precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(name = "fracciones_por_unidad", precision = 18, columnDefinition = "Double default 0.00")
   private Double fraccionesPorUnidad;
   
-  @Column(name = "precio_compra", precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(name = "precio_compra", precision = 18, columnDefinition = "Double default 0.00")
   private Double precioCompra;
   
-  @Column(precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(precision = 18, columnDefinition = "Double default 0.00")
   private Double utilidad;
   
-  @Column(name = "utilidad_fraccion", precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(name = "utilidad_fraccion", precision = 18, columnDefinition = "Double default 0.00")
   private Double utilidadFraccion;
   
-  @Column(name = "precio_promediado", precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(name = "precio_promediado", precision = 18, columnDefinition = "Double default 0.00")
   private Double precioPromediado;
   
-  @Column(length = 20, precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(length = 20, precision = 18, columnDefinition = "Double default 0.00")
   private Double precio;
   
-  @Column(name = "precio_fraccion", precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(name = "precio_fraccion", precision = 18, columnDefinition = "Double default 0.00")
   private Double precioFraccion;
   
   @ManyToOne(fetch = FetchType.LAZY)
@@ -113,13 +113,13 @@ public class Producto {
     this.productoImpuesto.add(item);
   }
   
-  @Column(precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(precision = 18, columnDefinition = "Double default 0.00")
   private Double entradas = Double.valueOf(0.0D);
   
-  @Column(precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(precision = 18, columnDefinition = "Double default 0.00")
   private Double salidas = Double.valueOf(0.0D);
   
-  @Column(name = "existencia_minima", precision = 18, scale = 5, columnDefinition = "Double default 0.00")
+  @Column(name = "existencia_minima", precision = 18, columnDefinition = "Double default 0.00")
   private Double existenciaMinima = Double.valueOf(0.0D);
   
   @Column(name = "estado_producto", length = 1)

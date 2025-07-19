@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="~{layout/layout :: head}"></head>
 
 <body class="fix-header card-no-border logo-center">
 
@@ -472,7 +472,7 @@
         <!-- ============================================================== -->
 
     </div>
-    <div th:replace="layout/layout :: scripts"></div>
+    <div th:replace="~{layout/layout :: scripts}"></div>
     <span th:if="${param.exito}">
 							<script>
 								swal("Éxito","Registro guardado con éxito","success");

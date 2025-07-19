@@ -3,7 +3,7 @@ package snn.soluciones.com.controllers.historico;
 import snn.soluciones.com.models.entity.HistoricoOtrosSistemas;
 import snn.soluciones.com.service.interfaces.IHistoricoOtrosSistemasService;
 import snn.soluciones.com.util.PageRender;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

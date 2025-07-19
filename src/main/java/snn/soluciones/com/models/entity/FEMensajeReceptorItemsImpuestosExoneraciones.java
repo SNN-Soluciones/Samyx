@@ -1,11 +1,11 @@
 package snn.soluciones.com.models.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +30,7 @@ public class FEMensajeReceptorItemsImpuestosExoneraciones {
   @Column(name = "fecha_emision", length = 30)
   private String fechaEmision;
   
-  @Column(name = "monto_impuesto", precision = 18, scale = 5)
+  @Column(name = "monto_impuesto", precision = 18)
   private Double montoImpuesto;
   
   @Column(name = "porcentaje_Compra", length = 3)

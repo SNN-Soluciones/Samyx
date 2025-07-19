@@ -3,7 +3,7 @@ package snn.soluciones.com.service.impl;
 import snn.soluciones.com.models.dao.IComprobantesElectronicosDao;
 import snn.soluciones.com.models.entity.ComprobantesElectronicos;
 import snn.soluciones.com.service.interfaces.IComprobantesElectronicosService;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

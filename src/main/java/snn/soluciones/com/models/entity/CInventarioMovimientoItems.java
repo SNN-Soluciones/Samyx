@@ -2,17 +2,17 @@ package snn.soluciones.com.models.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,31 +39,31 @@ public class CInventarioMovimientoItems {
   @Column(name = "detalle_producto", length = 255)
   private String detalleProducto;
   
-  @Column(precision = 18, scale = 5)
+  @Column(precision = 18)
   private Double cantidad;
   
-  @Column(name = "precio_compra", precision = 18, scale = 5)
+  @Column(name = "precio_compra", precision = 18)
   private Double precioCompra;
   
-  @Column(name = "precio_promediado", precision = 18, scale = 5)
+  @Column(name = "precio_promediado", precision = 18)
   private Double precioPromediado;
   
-  @Column(name = "precio_unitario", precision = 18, scale = 5)
+  @Column(name = "precio_unitario", precision = 18)
   private Double precioUnitario;
   
-  @Column(name = "monto_total", precision = 18, scale = 5)
+  @Column(name = "monto_total", precision = 18)
   private Double montoTotal;
   
-  @Column(name = "sub_total", precision = 18, scale = 5)
+  @Column(name = "sub_total", precision = 18)
   private Double subTotal;
   
-  @Column(name = "monto_descuento", precision = 18, scale = 5)
+  @Column(name = "monto_descuento", precision = 18)
   private Double montoDescuento;
   
   @Column(name = "naturaleza_descuento")
   private String naturalezaDescuento;
   
-  @Column(name = "monto_total_linea", precision = 18, scale = 5)
+  @Column(name = "monto_total_linea", precision = 18)
   private Double montoTotalLinea;
   
   public Double getTotalImpuestos() {

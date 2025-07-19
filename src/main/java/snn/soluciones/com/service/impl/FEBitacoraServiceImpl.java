@@ -4,7 +4,7 @@ import snn.soluciones.com.models.dao.IFEBitacoraDao;
 import snn.soluciones.com.models.entity.FEBitacora;
 import snn.soluciones.com.service.interfaces.IFEBitacoraService;
 import java.util.List;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

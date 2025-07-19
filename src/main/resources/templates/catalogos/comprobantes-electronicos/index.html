@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="~{layout/layout :: head}"></head>
 <body class="fix-header card-no-border logo-center">
 
 <div id="main-wrapper">
@@ -88,7 +88,10 @@
 
                                          <td>
                                          	<span th:remove="tag" th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision)>8}">
-                                         		<th:block th:with="sdf = ${new java.text.SimpleDateFormat('yyyy-MM-dd''T''HH:mm:ss')}">
+                                         		<!-- ✅ CORRECTO - Usar #dates directamente -->
+<span class="fecha-caducidad-criptografica">
+    <p th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
+</span>
 												    <p th:remove="tag" th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision)>0}" th:text="${#dates.format(sdf.parse(k.fechaEmision), 'dd/MM/yyyy hh:mm:ss a')}" />
 												 </th:block>
                                          	</span>
@@ -190,7 +193,7 @@
 
 </div>
 <input id="csrfToken" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-<div th:replace="layout/layout :: scripts"></div>
+<div th:replace="~{layout/layout :: scripts}"></div>
 
 <script type="text/javascript">
 var token = $('#csrfToken').val();

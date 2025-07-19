@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="~{layout/layout :: head}"></head>
 <body class="fix-header card-no-border logo-center">
 
 <div id="main-wrapper">
@@ -47,7 +47,10 @@
 	        		<li th:if="${k.emisor.fechaCaducidadCert != null and #strings.length(k.emisor.fechaCaducidadCert)>0}" class="list-group-item item-emisor-inicio"><span class="font-weight-bold">Fecha caducidad llave criptográfica: </span>
 	        			
 	        			<span class="fecha-caducidad-criptografica" >
-                             <th:block th:with="sdf = ${new java.text.SimpleDateFormat('yyyy-MM-dd''T''HH:mm:ss')}">
+                             <!-- ✅ CORRECTO - Usar #dates directamente -->
+<span class="fecha-caducidad-criptografica">
+    <p th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
+</span>
 								<p th:remove="tag" th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
 							 </th:block>
                         </span>
@@ -97,7 +100,7 @@
 
 </div>
 
-<div th:replace="layout/layout :: scripts"></div>
+<div th:replace="~{layout/layout :: scripts}"></div>
 
 
 

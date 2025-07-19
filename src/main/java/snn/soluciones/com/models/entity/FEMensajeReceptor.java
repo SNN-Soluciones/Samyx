@@ -3,21 +3,21 @@ package snn.soluciones.com.models.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -79,10 +79,10 @@ public class FEMensajeReceptor {
   @Column(name = "medio_pago", length = 2)
   public String medioPago;
   
-  @Column(name = "monto_total_impuesto_acreditar", precision = 18, scale = 5)
+  @Column(name = "monto_total_impuesto_acreditar", precision = 18)
   public Double montoTotalImpuestoAcreditar;
   
-  @Column(name = "monto_total_de_gasto_aplicable", precision = 18, scale = 5)
+  @Column(name = "monto_total_de_gasto_aplicable", precision = 18)
   public Double montoTotalDeGastoAplicable;
   
   @Column(name = "fecha_emision", length = 40)
@@ -91,55 +91,55 @@ public class FEMensajeReceptor {
   @Column(length = 5)
   private String moneda;
   
-  @Column(name = "tipoCambio", precision = 18, scale = 5)
+  @Column(name = "tipoCambio", precision = 18)
   private double tipoCambio;
   
-  @Column(name = "total_serv_gravados", precision = 18, scale = 5)
+  @Column(name = "total_serv_gravados", precision = 18)
   private Double totalServGravados = Double.valueOf(0.0D);
   
-  @Column(name = "total_serv_exentos", precision = 18, scale = 5)
+  @Column(name = "total_serv_exentos", precision = 18)
   private double totalServExentos = 0.0D;
   
-  @Column(name = "total_serv_exonerado", precision = 18, scale = 5)
+  @Column(name = "total_serv_exonerado", precision = 18)
   private double totalServExonerado = 0.0D;
   
-  @Column(name = "total_merc_gravadas", precision = 18, scale = 5)
+  @Column(name = "total_merc_gravadas", precision = 18)
   private double totalMercGravadas = 0.0D;
   
-  @Column(name = "total_merc_exentas", precision = 18, scale = 5)
+  @Column(name = "total_merc_exentas", precision = 18)
   private double totalMercExentas = 0.0D;
   
-  @Column(name = "total_merc_exonerada", precision = 18, scale = 5)
+  @Column(name = "total_merc_exonerada", precision = 18)
   private double totalMercExonerada = 0.0D;
   
-  @Column(name = "total_gravados", precision = 18, scale = 5)
+  @Column(name = "total_gravados", precision = 18)
   private double totalGravados = 0.0D;
   
-  @Column(name = "total_exentos", precision = 18, scale = 5)
+  @Column(name = "total_exentos", precision = 18)
   private double totalExentos = 0.0D;
   
-  @Column(name = "total_exonerado", precision = 18, scale = 5)
+  @Column(name = "total_exonerado", precision = 18)
   private double totalExonerado = 0.0D;
   
-  @Column(name = "total_ventas", precision = 18, scale = 5)
+  @Column(name = "total_ventas", precision = 18)
   private double totalVentas = 0.0D;
   
-  @Column(name = "total_descuentos", precision = 18, scale = 5)
+  @Column(name = "total_descuentos", precision = 18)
   private double totalDescuentos = 0.0D;
   
-  @Column(name = "total_venta_neta", precision = 18, scale = 5)
+  @Column(name = "total_venta_neta", precision = 18)
   private double totalVentaNeta = 0.0D;
   
-  @Column(precision = 18, scale = 5)
+  @Column(precision = 18)
   private double impuestos = 0.0D;
   
-  @Column(name = "total_iva_devuelto", precision = 18, scale = 5)
+  @Column(name = "total_iva_devuelto", precision = 18)
   private double totalIVADevuelto = 0.0D;
   
   @Column(name = "total_otros_cargos", length = 20)
   private double totalOtrosCargos = 0.0D;
   
-  @Column(name = "total_factura", precision = 18, scale = 5)
+  @Column(name = "total_factura", precision = 18)
   private Double totalFactura = Double.valueOf(0.0D);
   
   @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

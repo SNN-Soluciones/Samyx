@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="~{layout/layout :: head}"></head>
 <body class="fix-header card-no-border logo-center">
 
 <div id="main-wrapper">
@@ -114,7 +114,7 @@
 
 </div>
 <input id="csrfToken" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-<div th:replace="layout/layout :: scripts"></div>
+<div th:replace="~{layout/layout :: scripts}"></div>
 
 <script th:src="@{/js/date.js}"></script>
 

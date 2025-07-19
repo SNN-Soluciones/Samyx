@@ -6,11 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import snn.soluciones.com.models.entity.FEFactura;
 
-public interface IFEFacturaDao extends PagingAndSortingRepository<FEFactura, Long> {
+public interface IFEFacturaDao extends CrudRepository<FEFactura, Long> {
   @Query("SELECT MAX(c) FROM FEFactura c WHERE c.emisor.id = ?1")
   FEFactura findMaxFacturaByEmisor(Long paramLong);
   

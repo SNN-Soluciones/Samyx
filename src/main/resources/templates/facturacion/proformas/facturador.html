@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="~{layout/layout :: head}"></head>
 
 <body class="fix-header card-no-border logo-center">
     <div id="main-wrapper">
@@ -1679,7 +1679,7 @@
                 <!-- ============================================================== -->
             </div>
 
-            <div th:replace="layout/layout :: scripts"></div>
+            <div th:replace="~{layout/layout :: scripts}"></div>
             <div th:replace="facturacion/scriptFacturador :: scriptFacturacionFracmento"></div>
 
 </body>
