@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,21 +45,31 @@ public class SpringSecurityConfig {
                 "/scss/**",
                 "/js/**",
                 "/images/**",
+                "/vendor/**",
+                "/fonts/**",
+                "/assets/**",
+                "/static/**",
                 "/locale/**",
                 "/ubicacion/**",
                 "/nuevo-registro/**",
-                "/account/forgot/**"
+                "/account/forgot/**",
+                "/error",
+                "/error/**"
             ).permitAll()
             .anyRequest().authenticated()
         )
         // Configuración del formulario de login
         .formLogin(form -> form
             .loginPage("/login")
+            .loginProcessingUrl("/login")
             .successHandler(successHandler)
+            .failureUrl("/login?error")
             .permitAll()
         )
         // Configuración de logout
-        .logout(LogoutConfigurer::permitAll
+        .logout(logout -> logout
+            .logoutSuccessUrl("/login?logout")
+            .permitAll()
         )
         // Manejo de excepciones
         .exceptionHandling(exceptions -> exceptions
@@ -66,6 +77,21 @@ public class SpringSecurityConfig {
         );
 
     return http.build();
+  }
+
+  // Configuración para ignorar completamente ciertos paths de Spring Security
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return (web) -> web.ignoring()
+        .requestMatchers(
+            "/css/**",
+            "/js/**",
+            "/images/**",
+            "/vendor/**",
+            "/fonts/**",
+            "/assets/**",
+            "/static/**"
+        );
   }
 
   @Bean

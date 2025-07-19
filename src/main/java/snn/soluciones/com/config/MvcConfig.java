@@ -49,7 +49,18 @@ public class MvcConfig implements WebMvcConfigurer {
     if (redirectLoopPreventionInterceptor != null) {
       registry.addInterceptor(redirectLoopPreventionInterceptor)
           .addPathPatterns("/**")
-          .excludePathPatterns("/css/**", "/js/**", "/images/**", "/vendor/**", "/fonts/**");
+          .excludePathPatterns(
+              "/css/**",
+              "/js/**",
+              "/images/**",
+              "/vendor/**",
+              "/fonts/**",
+              "/assets/**",  // Corregido: era assets.bootstrap-datapicker
+              "/scss/**",
+              "/static/**",
+              "/error",
+              "/error/**"
+          );
     }
   }
 }
