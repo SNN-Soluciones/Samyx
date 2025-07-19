@@ -6,7 +6,7 @@
 <div id="main-wrapper">
 
 <header th:replace="~{layout/layout :: header}"></header>
-<aside th:replace="layout/layout :: aside"></aside>
+<aside th:replace="~{layout/layout :: aside}"></aside>
 
 
 
@@ -71,7 +71,7 @@
 		  </div>
       
 		</div>
-    <nav th:replace="paginator-nav :: paginator"></nav>
+    <nav th:replace="~{paginator-nav :: paginator}"></nav>
 		
 		<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" data-toggle="tooltip" data-placement="left" class="btn btn-success btn-registrar-empresa color-blanco" title=" Registre una nueva empresa" th:href="@{/emisor/registrar-empresa/}"><i class="fas fa-plus-circle"></i> Registrar nueva empresa</a>
 		    
@@ -86,7 +86,7 @@
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
-    <footer th:replace="layout/layout :: footer"></footer>
+    <footer th:replace="~{layout/layout :: footer}"></footer>
     <!-- ============================================================== -->
     <!-- End footer -->
     <!-- ============================================================== -->
