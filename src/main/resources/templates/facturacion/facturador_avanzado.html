@@ -775,7 +775,7 @@
             </div>
             <input type="hidden" value="" id="inputImprimirFactura">
             <iframe style="width:100%; height:1px; display:none" id="IframeImprimirFactura" frameBorder="0" allowfullscreen></iframe>
-            <table th:replace="facturacion/plantilla-items_avanzado :: itemsFactura"></table>
+            <table th:replace="~{facturacion/plantilla-items_avanzado :: itemsFactura}"></table>
             <div id="itemsOtrosCargos" class="d-none">
                <div class="row" id="otrosCargos{R_ID}">
                   <div class="col-md-2">
@@ -1153,6 +1153,6 @@
          <!-- ============================================================== -->
       </div>
       <div th:replace="~{layout/layout :: scripts}"></div>
-      <div th:replace="facturacion/scriptFacturador :: scriptFacturacionFracmento"></div>
+      <div th:replace="~{facturacion/scriptFacturador :: scriptFacturacionFracmento}"></div>
    </body>
 </html>
