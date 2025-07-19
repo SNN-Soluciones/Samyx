@@ -86,8 +86,14 @@
 
 																			 <td>
 																				<span th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision) > 8}">
-																						<!-- Usar #temporals para parsear fechas ISO -->
-																						<p th:text="${#dates.format(k.fechaEmision, 'dd/MM/yyyy')}"></p>
+																						<!-- Opción 1: Usar #temporals para parsear fechas ISO (recomendado para Spring Boot 3.x con Thymeleaf 3.1+) -->
+<!--																						<p th:text="${#temporals.format(#temporals.create(k.fechaEmision), 'dd/MM/yyyy')}"></p>-->
+
+																					<!-- Opción 2: Si la opción anterior no funciona, usar substring para extraer solo la fecha -->
+																					<!-- <p th:text="${#strings.substring(k.fechaEmision, 8, 10) + '/' + #strings.substring(k.fechaEmision, 5, 7) + '/' + #strings.substring(k.fechaEmision, 0, 4)}"></p> -->
+
+																					<!-- Opción 3: Mostrar fecha y hora completa -->
+																					 <p th:text="${#strings.replace(#strings.substring(k.fechaEmision, 0, 19), 'T', ' ')}"></p>
 																				</span>
 																			 </td>
 

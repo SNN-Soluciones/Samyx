@@ -86,16 +86,6 @@
                                          <td th:text="${k.clave}"></td>
                                          <td th:text="${k.sucursal}+'-'+${k.terminal}"></td>
 
-                                         <td>
-                                         	<span th:remove="tag" th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision)>8}">
-                                         		<!-- ✅ CORRECTO - Usar #dates directamente -->
-<span class="fecha-caducidad-criptografica">
-    <p th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
-</span>
-												    <p th:remove="tag" th:if="${k.fechaEmision != null and #strings.length(k.fechaEmision)>0}" th:text="${#dates.format(sdf.parse(k.fechaEmision), 'dd/MM/yyyy hh:mm:ss a')}" />
-												 </th:block>
-                                         	</span>
-                                         </td>  
                                          
                                          <td><a th:href="${urlApiDownloadDocs} + ${k.identificacion} +'/'+ ${k.nameXmlSign} +'.xml'">
                                          	<i class="fas fa-cloud-download-alt"></i> Descargar</a>
