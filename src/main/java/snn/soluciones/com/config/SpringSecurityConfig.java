@@ -1,4 +1,4 @@
-package snn.soluciones.com;
+package snn.soluciones.com.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import snn.soluciones.com.auth.handler.LoginSuccessHandler;
@@ -33,7 +35,7 @@ public class SpringSecurityConfig {
     http
         // Configuración de headers - deshabilitando frame options
         .headers(headers -> headers
-            .frameOptions(frameOptions -> frameOptions.disable())
+            .frameOptions(FrameOptionsConfig::disable)
         )
         // Configuración de autorización
         .authorizeHttpRequests(authz -> authz
@@ -56,8 +58,7 @@ public class SpringSecurityConfig {
             .permitAll()
         )
         // Configuración de logout
-        .logout(logout -> logout
-            .permitAll()
+        .logout(LogoutConfigurer::permitAll
         )
         // Manejo de excepciones
         .exceptionHandling(exceptions -> exceptions
