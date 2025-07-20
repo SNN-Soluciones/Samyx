@@ -45,7 +45,7 @@ public class TipoDeCambioController {
       PageRender<CTipoDeCambio> pageRender = new PageRender("/tipo-de-cambio/", ListaTiposDeCambio);
       model.addAttribute("ListaTiposDeCambio", ListaTiposDeCambio);
       model.addAttribute("page", pageRender);
-      return "/catalogos/tipo-de-cambio/index";
+      return "catalogos/tipo-de-cambio/index";
     } 
     return "redirect:/";
   }
@@ -56,7 +56,7 @@ public class TipoDeCambioController {
     List<Moneda> listaMonedas = this._monedaService.findAll();
     model.addAttribute("objetoTipoDeCambio", objetoTipoDeCambio);
     model.addAttribute("listaMonedas", listaMonedas);
-    return "/catalogos/tipo-de-cambio/form";
+    return "catalogos/tipo-de-cambio/form";
   }
   
   @GetMapping({"/edit/{id}"})
@@ -66,7 +66,7 @@ public class TipoDeCambioController {
       List<Moneda> listaMonedas = this._monedaService.findAll();
       model.addAttribute("listaMonedas", listaMonedas);
       model.addAttribute("objetoTipoDeCambio", objetoTipoDeCambio);
-      return "/catalogos/tipo-de-cambio/form";
+      return "catalogos/tipo-de-cambio/form";
     } 
     return "redirect:/";
   }

@@ -35,27 +35,27 @@ public class UbicacionController {
   public String getProvincias(Model model) {
     List<CProvincia> listaProvincias = this._provinciaService.findAll();
     model.addAttribute("listaProvincias", listaProvincias);
-    return "/ubicacion/provincias";
+    return "ubicacion/provincias";
   }
   
   @PostMapping({"/cantones"})
   public String getCantones(Model model, @RequestParam(name = "id", defaultValue = "0") Long id) {
     List<CCanton> listaCantones = this._cantonService.findAllByIdProvincia(id);
     model.addAttribute("listaCantones", listaCantones);
-    return "/ubicacion/cantones";
+    return "ubicacion/cantones";
   }
   
   @PostMapping({"/distritos"})
   public String getDistritos(Model model, @RequestParam(name = "id", defaultValue = "0") Long id) {
     List<CDistrito> listaDistritos = this._distritoService.findAllByIdCanton(id);
     model.addAttribute("listaDistritos", listaDistritos);
-    return "/ubicacion/distritos";
+    return "ubicacion/distritos";
   }
   
   @PostMapping({"/barrios"})
   public String getBarrios(Model model, @RequestParam(name = "id", defaultValue = "0") Long id) {
     List<CBarrio> listaBarrios = this._barrioService.findAllByIdDistrito(id);
     model.addAttribute("listaBarrios", listaBarrios);
-    return "/ubicacion/barrios";
+    return "ubicacion/barrios";
   }
 }

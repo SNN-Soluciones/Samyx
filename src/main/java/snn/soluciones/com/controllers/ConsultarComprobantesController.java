@@ -49,7 +49,7 @@ public class ConsultarComprobantesController {
   @GetMapping({"/consulta-comprobantes-manualmente/"})
   public String home(Model model, HttpSession session) {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null)
-      return "/consulta-comprobantes/index"; 
+      return "consulta-comprobantes/index"; 
     return "redirect:/";
   }
   

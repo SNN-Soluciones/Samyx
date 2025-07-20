@@ -80,7 +80,7 @@ public class ClienteController {
       PageRender<Cliente> pageRender = new PageRender("/clientes/", ListaClientes);
       model.addAttribute("ListaClientes", ListaClientes);
       model.addAttribute("page", pageRender);
-      return "/catalogos/clientes/index";
+      return "catalogos/clientes/index";
     } 
     return "redirect:/";
   }
@@ -95,7 +95,7 @@ public class ClienteController {
     model.addAttribute("listaTipoDeIdentificacion", listaTipoDeIdentificacion);
     model.addAttribute("listaProvincias", listaProvincias);
     model.addAttribute("cliente", cliente);
-    return "/catalogos/clientes/form";
+    return "catalogos/clientes/form";
   }
   
   @GetMapping({"/edit/{id}"})
@@ -116,7 +116,7 @@ public class ClienteController {
       model.addAttribute("listaDistritos", listaDistritos);
       model.addAttribute("listaBarrios", listaBarrios);
       model.addAttribute("cliente", cliente);
-      return "/catalogos/clientes/form";
+      return "catalogos/clientes/form";
     } 
     return "redirect:/";
   }

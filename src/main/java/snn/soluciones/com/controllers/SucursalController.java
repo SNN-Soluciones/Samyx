@@ -41,7 +41,7 @@ public class SucursalController {
       Long sucursalId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
       List<CSucursal> listaSucursales = this._sucursalService.findAllByEmisorId(sucursalId);
       model.addAttribute("listaSucursales", listaSucursales);
-      return "/catalogos/sucursales/index";
+      return "catalogos/sucursales/index";
     } 
     return "redirect:/";
   }
@@ -57,7 +57,7 @@ public class SucursalController {
         model.addAttribute("statusInput", Integer.valueOf(0));
       } 
       model.addAttribute("sucursal", sucursal);
-      return "/catalogos/sucursales/form";
+      return "catalogos/sucursales/form";
     } 
     return "redirect:/";
   }

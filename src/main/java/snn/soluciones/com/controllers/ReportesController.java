@@ -132,7 +132,7 @@ public class ReportesController {
       model.addAttribute("listaCondicionDeVenta", listaCondicionDeVenta);
       model.addAttribute("listaMedioDePago", listaMedioDePago);
       model.addAttribute("listaMonedas", listaMonedas);
-      return "/reportes/ventas/index";
+      return "reportes/ventas/index";
     } 
     return "redirect:/";
   }
@@ -940,7 +940,7 @@ public class ReportesController {
       model.addAttribute("listaMedioDePago", listaMedioDePago);
       model.addAttribute("listaMonedas", listaMonedas);
       model.addAttribute("listaProveedores", listaProveedores);
-      return "/reportes/ventas-productos/index";
+      return "reportes/ventas-productos/index";
     } 
     return "redirect:/";
   }
@@ -1003,7 +1003,7 @@ public class ReportesController {
       List<Moneda> listaMonedas = this._monedaService.findAll();
       model.addAttribute("listaActividades", listaActividades);
       model.addAttribute("listaMonedas", listaMonedas);
-      return "/reportes/compras/index";
+      return "reportes/compras/index";
     } 
     return "redirect:/";
   }

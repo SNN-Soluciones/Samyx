@@ -92,7 +92,7 @@ public class FEDocumentosController {
         PageRender<FEFactura> pageRender = new PageRender("/fe-documentos/", ListaDocumentos);
         model.addAttribute("ListaDocumentos", ListaDocumentos);
         model.addAttribute("page", pageRender);
-        return "/catalogos/fe-documentos/index";
+        return "catalogos/fe-documentos/index";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/fe-documentos/";
     } 
@@ -107,7 +107,7 @@ public class FEDocumentosController {
       model.addAttribute("claveFactura", factura.getClave());
       model.addAttribute("consecutivoFactura", factura.getConsecutivo());
       model.addAttribute("factura", factura);
-      return "/catalogos/fe-documentos/form";
+      return "catalogos/fe-documentos/form";
     } 
     return "redirect:/";
   }
@@ -121,7 +121,7 @@ public class FEDocumentosController {
     model.addAttribute("urlApiDownloadXml", this.urlApiDownloadXml);
     model.addAttribute("identificacionEmpresa", session.getAttribute("SESSION_IDENTIFICACION_EMPRESA"));
     model.addAttribute("urlApiImprimirPdf", this.urlApiImprimirPdf);
-    return "/catalogos/fe-documentos/bitacora";
+    return "catalogos/fe-documentos/bitacora";
   }
   
   @PostMapping(value = {"/emitir-nd-nc"}, produces = {"application/json"})

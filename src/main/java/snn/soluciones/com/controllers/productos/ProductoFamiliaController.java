@@ -39,7 +39,7 @@ public class ProductoFamiliaController {
       Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
       List<ProductoFamilia> listaProductoFamilia = this._familiasService.findAllByEmisorId(emisorId);
       model.addAttribute("listaProductoFamilia", listaProductoFamilia);
-      return "/catalogos/productos/familia/index";
+      return "catalogos/productos/familia/index";
     } 
     return "redirect:/";
   }
@@ -48,7 +48,7 @@ public class ProductoFamiliaController {
   public String form(Model model) {
     ProductoFamilia productoFamilia = new ProductoFamilia();
     model.addAttribute("productoFamilia", productoFamilia);
-    return "/catalogos/productos/familia/form";
+    return "catalogos/productos/familia/form";
   }
   
   @GetMapping({"/edit/{id}"})
@@ -57,7 +57,7 @@ public class ProductoFamiliaController {
       Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
       ProductoFamilia productoFamilia = this._familiasService.findByIdAndEmisorId(emisorId, id);
       model.addAttribute("productoFamilia", productoFamilia);
-      return "/catalogos/productos/familia/form";
+      return "catalogos/productos/familia/form";
     } 
     return "redirect:/";
   }

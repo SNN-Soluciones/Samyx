@@ -59,7 +59,7 @@ public class TerminalUsuarioController {
     } catch (Exception e) {
       e.printStackTrace();
     } 
-    return "/catalogos/terminales/usuarios/index";
+    return "catalogos/terminales/usuarios/index";
   }
   
   @PostMapping({"/form-nuevo-acceso"})
@@ -84,13 +84,13 @@ public class TerminalUsuarioController {
     } catch (Exception e) {
       e.printStackTrace();
     } 
-    return "/catalogos/terminales/usuarios/formNuevoAcceso";
+    return "catalogos/terminales/usuarios/formNuevoAcceso";
   }
   
   @PostMapping({"/terminales-por-sucursal"})
   public String FormSucursalByTerminal(Model model, @RequestParam("id") Long id) {
     model.addAttribute("listaTerminales", this._terminalService.findAllTerminalBySucursal(id));
-    return "/catalogos/terminales/usuarios/formSucursalByTerminal";
+    return "catalogos/terminales/usuarios/formSucursalByTerminal";
   }
   
   @PostMapping({"/form-save-nuevo-acceso"})

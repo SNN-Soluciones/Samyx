@@ -32,7 +32,7 @@ public class HistoricoOtrosSistemasController {
       PageRender<HistoricoOtrosSistemas> pageRender = new PageRender("/historicos/", ListaDocumentos);
       model.addAttribute("ListaDocumentos", ListaDocumentos);
       model.addAttribute("page", pageRender);
-      return "/catalogos/historicos-otros-sistemas/index";
+      return "catalogos/historicos-otros-sistemas/index";
     } 
     return "redirect:/";
   }

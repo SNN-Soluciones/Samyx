@@ -253,7 +253,7 @@ public class ProformasController {
         PageRender<FEFactura> pageRender = new PageRender("/proformas/", ListaDocumentos);
         model.addAttribute("ListaDocumentos", ListaDocumentos);
         model.addAttribute("page", pageRender);
-        return "/facturacion/proformas/index";
+        return "facturacion/proformas/index";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/proformas/";
     } 
@@ -336,7 +336,7 @@ public class ProformasController {
           model.addAttribute("TXT_PRECIO_FRACCIONES", "Precio fracción");
           model.addAttribute("TIPO_VENTA", "B");
         } 
-        return "/facturacion/proformas/facturador";
+        return "facturacion/proformas/facturador";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/proformas/";
     } 
@@ -427,7 +427,7 @@ public class ProformasController {
         model.addAttribute("TIPO_VENTA", "B");
       } 
       model.addAttribute("factura", _factura);
-      return "/facturacion/proformas/facturador";
+      return "facturacion/proformas/facturador";
     } 
     return "redirect:/";
   }
@@ -439,7 +439,7 @@ public class ProformasController {
       Usuario usuario = this._usuarioService.findByUsername(auth.getName());
       model.addAttribute("listaSucursales", this._terminalUsuarioService
           .findAllByEmisorAndSucursal(emisorId, usuario.getId()));
-      return "/facturacion/proformas/asignar-sucursal-terminal";
+      return "facturacion/proformas/asignar-sucursal-terminal";
     } 
     return "redirect:/";
   }
@@ -461,7 +461,7 @@ public class ProformasController {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null) {
       Usuario usuario = this._usuarioService.findByUsername(auth.getName());
       model.addAttribute("listaTerminales", this._terminalUsuarioService.findAllBySucursalByUsuario(id, usuario.getId()));
-      return "/facturacion/proformas/sucursal-terminal";
+      return "facturacion/proformas/sucursal-terminal";
     } 
     return "redirect:/";
   }
@@ -489,7 +489,7 @@ public class ProformasController {
       } 
       if (urlRetorno != null)
         return "redirect:" + urlRetorno; 
-      return "/";
+      return "";
     } 
     return "redirect:/";
   }

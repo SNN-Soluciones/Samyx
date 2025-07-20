@@ -62,7 +62,7 @@ public class HomeController {
       model.addAttribute("tte", tte);
       model.addAttribute("tfec", fec);
       model.addAttribute("tfee", fee);
-      return "/home/home";
+      return "home/home";
     }
 
     // Si no hay empresa en sesión, redirigir a selección de empresa

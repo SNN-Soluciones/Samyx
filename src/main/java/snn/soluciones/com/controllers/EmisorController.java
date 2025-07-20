@@ -128,8 +128,8 @@ public class EmisorController {
     model.addAttribute("page", pageRender);
     model.addAttribute("listaEmisor", listaEmisor);
     if (request.isUserInRole("ROLE_SUPER_ADMIN"))
-      return "/emisor/home-table"; 
-    return "/emisor/home";
+      return "emisor/home-table"; 
+    return "emisor/home";
   }
   
   @Secured({"ROLE_ADMIN", "ROLE_USER"})
@@ -207,7 +207,7 @@ public class EmisorController {
         model.addAttribute("listaSucursales", listaSucursales);
         model.addAttribute("listaActividades", listaActividades);
         model.addAttribute("BASE_URL_LOGO", this.pathUploadFilesApi + "/logo/");
-        return "/emisor/form";
+        return "emisor/form";
       } 
       return "redirect:/emisor/";
     } 
@@ -221,7 +221,7 @@ public class EmisorController {
       Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
       List<EmisorActividades> actividadesEmisor = this._emisorActividad.findAllByEmisorId(emisorId);
       model.addAttribute("actividadesEmisor", actividadesEmisor);
-      return "/emisor/actividades-economicas/index";
+      return "emisor/actividades-economicas/index";
     } 
     return "";
   }
@@ -254,7 +254,7 @@ public class EmisorController {
     List<CProvincia> listaProvincias = this._provinciaService.findAll();
     model.addAttribute("listaProvincias", listaProvincias);
     model.addAttribute("emisor", emisor);
-    return "/emisor/nueva-empresa";
+    return "emisor/nueva-empresa";
   }
   
   @Secured({"ROLE_ADMIN", "ROLE_USER"})
@@ -320,7 +320,7 @@ public class EmisorController {
       model.addAttribute("listaCantones", listaCantones);
       model.addAttribute("listaDistritos", listaDistritos);
       model.addAttribute("listaBarrios", listaBarrios);
-      return "/emisor/nueva-empresa";
+      return "emisor/nueva-empresa";
     } 
   }
   

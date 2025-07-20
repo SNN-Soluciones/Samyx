@@ -75,7 +75,7 @@ public class ProveedoresController {
       PageRender<Cliente> pageRender = new PageRender("/inventario/proveedores/", ListaProveedores);
       model.addAttribute("ListaProveedores", ListaProveedores);
       model.addAttribute("page", pageRender);
-      return "/catalogos/productos/inventario/proveedores/index";
+      return "catalogos/productos/inventario/proveedores/index";
     } 
     return "redirect:/";
   }
@@ -88,7 +88,7 @@ public class ProveedoresController {
     model.addAttribute("listaTipoDeIdentificacion", listaTipoDeIdentificacion);
     model.addAttribute("listaProvincias", listaProvincias);
     model.addAttribute("proveedores", cliente);
-    return "/catalogos/productos/inventario/proveedores/form";
+    return "catalogos/productos/inventario/proveedores/form";
   }
   
   @GetMapping({"/proveedores/edit/{id}"})
@@ -107,7 +107,7 @@ public class ProveedoresController {
       model.addAttribute("listaDistritos", listaDistritos);
       model.addAttribute("listaBarrios", listaBarrios);
       model.addAttribute("proveedores", proveedores);
-      return "/catalogos/productos/inventario/proveedores/form";
+      return "catalogos/productos/inventario/proveedores/form";
     } 
     return "redirect:/";
   }

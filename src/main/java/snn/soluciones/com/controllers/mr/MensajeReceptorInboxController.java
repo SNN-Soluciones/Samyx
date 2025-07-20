@@ -60,7 +60,7 @@ public class MensajeReceptorInboxController {
       model.addAttribute("listaDocumentos", listaDocumentos);
       model.addAttribute("page", pageRender);
       model.addAttribute("BASE_URL", this.pathUploadFilesApi + "/mr-automatico/");
-      return "/mensaje-receptor/mr-inbox/index";
+      return "mensaje-receptor/mr-inbox/index";
     } 
     return "redirect:/";
   }
@@ -85,7 +85,7 @@ public class MensajeReceptorInboxController {
         model.addAttribute("facturaXmlFinal", removeUTF8BOM(facturaXmlFinal));
         model.addAttribute("mensajeReceptor", mensajeReceptor);
         model.addAttribute("listaActividades", listaActividades);
-        return "/mensaje-receptor/mr-inbox/form";
+        return "mensaje-receptor/mr-inbox/form";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/mensaje-receptor-inbox/";
     } 

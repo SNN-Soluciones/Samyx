@@ -34,7 +34,7 @@ public class ReportesInventarioController {
   @GetMapping({"/"})
   public String home(Model model, HttpSession session) {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null)
-      return "/catalogos/productos/inventario/reportes/index"; 
+      return "catalogos/productos/inventario/reportes/index"; 
     return "redirect:/";
   }
   

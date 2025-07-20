@@ -223,7 +223,7 @@ public class PrefacturasController {
         PageRender<FEFactura> pageRender = new PageRender("/prefacturas/", ListaDocumentos);
         model.addAttribute("ListaDocumentos", ListaDocumentos);
         model.addAttribute("page", pageRender);
-        return "/facturacion/prefacturas/index";
+        return "facturacion/prefacturas/index";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/prefacturas/";
     } 
@@ -295,7 +295,7 @@ public class PrefacturasController {
         model.addAttribute("MENSAJE_FORM1", this.MENSAJE_FORM1);
         model.addAttribute("MENSAJE_FORM2", this.MENSAJE_FORM2);
         model.addAttribute("MENSAJE_FORM3", this.MENSAJE_FORM3);
-        return "/facturacion/prefacturas/facturador";
+        return "facturacion/prefacturas/facturador";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/prefacturas/";
     } 
@@ -368,7 +368,7 @@ public class PrefacturasController {
       model.addAttribute("MENSAJE_FORM2", this.MENSAJE_FORM2);
       model.addAttribute("MENSAJE_FORM3", this.MENSAJE_FORM3);
       model.addAttribute("factura", _factura);
-      return "/facturacion/prefacturas/facturador";
+      return "facturacion/prefacturas/facturador";
     } 
     return "redirect:/";
   }

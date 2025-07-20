@@ -79,7 +79,7 @@ public class ReportesCXC {
       mediosDePago.add(Long.valueOf(Long.parseLong("101")));
       List<CMedioDePago> listaMedioDePago = this._medioDePagoService.findAllIn(mediosDePago);
       model.addAttribute("listaMedioDePago", listaMedioDePago);
-      return "/cuentas-por-cobrar/reportes/index";
+      return "cuentas-por-cobrar/reportes/index";
     } 
     return "redirect:/";
   }
@@ -191,7 +191,7 @@ public class ReportesCXC {
   @GetMapping({"/reportes"})
   public String reportesCXC(Model model, HttpSession session) {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null)
-      return "/cuentas-por-cobrar/reportes/reporteCXC"; 
+      return "cuentas-por-cobrar/reportes/reporteCXC"; 
     return "redirect:/";
   }
   

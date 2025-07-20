@@ -40,7 +40,7 @@ public class TerminalController {
       Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
       List<CTerminal> listaTerminales = this._terminalService.findAllTerminalBySucursalByEmisor(emisorId);
       model.addAttribute("listaTerminales", listaTerminales);
-      return "/catalogos/terminales/index";
+      return "catalogos/terminales/index";
     } 
     return "redirect:/";
   }
@@ -59,7 +59,7 @@ public class TerminalController {
       } 
       model.addAttribute("listaSucursales", listaSucursales);
       model.addAttribute("terminal", terminal);
-      return "/catalogos/terminales/form";
+      return "catalogos/terminales/form";
     } 
     return "redirect:/";
   }

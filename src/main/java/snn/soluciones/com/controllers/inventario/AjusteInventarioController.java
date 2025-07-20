@@ -71,7 +71,7 @@ public class AjusteInventarioController {
       PageRender<CInventarioAjuste> pageRender = new PageRender("/inventario/factura-compra/", ListaMovimientos);
       model.addAttribute("ListaMovimientos", ListaMovimientos);
       model.addAttribute("page", pageRender);
-      return "/catalogos/productos/inventario/ajuste-inventario/index";
+      return "catalogos/productos/inventario/ajuste-inventario/index";
     } 
     return "redirect:/";
   }
@@ -105,7 +105,7 @@ public class AjusteInventarioController {
       model.addAttribute("V_FACTURADOR", "V1");
       model.addAttribute("inventario", inventario);
       model.addAttribute("listaMonedas", listaMonedas);
-      return "/catalogos/productos/inventario/ajuste-inventario/form";
+      return "catalogos/productos/inventario/ajuste-inventario/form";
     } 
     return "redirect:/";
   }
@@ -118,7 +118,7 @@ public class AjusteInventarioController {
       List<Moneda> listaMonedas = this._monedaService.findAll();
       model.addAttribute("listaMonedas", listaMonedas);
       model.addAttribute("inventario", inventario);
-      return "/catalogos/productos/inventario/ajuste-inventario/view";
+      return "catalogos/productos/inventario/ajuste-inventario/view";
     } 
     return "redirect:/";
   }

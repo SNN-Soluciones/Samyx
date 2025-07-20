@@ -102,7 +102,7 @@ public class MensajeReceptorController {
       PageRender<FEMensajeReceptor> pageRender = new PageRender("/mensaje-receptor/", listaDocumentos);
       model.addAttribute("listaDocumentos", listaDocumentos);
       model.addAttribute("page", pageRender);
-      return "/mensaje-receptor/index";
+      return "mensaje-receptor/index";
     } 
     return "redirect:/";
   }
@@ -128,7 +128,7 @@ public class MensajeReceptorController {
         model.addAttribute("TXT_PRECIO_FRACCIONES", "Precio fracción");
         model.addAttribute("TIPO_VENTA", "B");
       } 
-      return "/mensaje-receptor/view";
+      return "mensaje-receptor/view";
     } 
     return "redirect:/";
   }
@@ -142,7 +142,7 @@ public class MensajeReceptorController {
         FEMensajeReceptor mensajeReceptor = new FEMensajeReceptor();
         model.addAttribute("mensajeReceptor", mensajeReceptor);
         model.addAttribute("listaActividades", listaActividades);
-        return "/mensaje-receptor/form";
+        return "mensaje-receptor/form";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/mensaje-receptor/form";
     } 

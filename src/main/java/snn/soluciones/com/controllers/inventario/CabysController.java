@@ -46,7 +46,7 @@ public class CabysController {
       PageRender<EmisorCabys> pageRender = new PageRender("/inventario/cabys/", ListaCabys);
       model.addAttribute("ListaCabys", ListaCabys);
       model.addAttribute("page", pageRender);
-      return "/catalogos/productos/inventario/cabys/index";
+      return "catalogos/productos/inventario/cabys/index";
     } 
     return "redirect:/";
   }

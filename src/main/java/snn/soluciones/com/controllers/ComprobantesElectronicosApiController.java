@@ -59,7 +59,7 @@ public class ComprobantesElectronicosApiController {
     model.addAttribute("page", pageRender);
     model.addAttribute("urlApiDownloadDocs", this.urlApiDownloadDocs);
     model.addAttribute("urlApiImprimirPdf", this.urlApiImprimirPdf);
-    return "/catalogos/comprobantes-electronicos/index";
+    return "catalogos/comprobantes-electronicos/index";
   }
   
   @GetMapping({"/comprobantes-electronicos-enviados"})
@@ -74,7 +74,7 @@ public class ComprobantesElectronicosApiController {
       model.addAttribute("page", pageRender);
       model.addAttribute("urlApiDownloadDocs", this.urlApiDownloadDocs);
       model.addAttribute("urlApiImprimirPdf", this.urlApiImprimirPdf);
-      return "/catalogos/comprobantes-electronicos/comprobantes-cliente";
+      return "catalogos/comprobantes-electronicos/comprobantes-cliente";
     } 
     return "redirect:/";
   }
@@ -84,7 +84,7 @@ public class ComprobantesElectronicosApiController {
   public String edit(Model model, @PathVariable("id") Long id) {
     ComprobantesElectronicos comprobantesElectronico = this._comprobantesElectronicosService.findById(id);
     model.addAttribute("comprobantesElectronico", comprobantesElectronico);
-    return "/catalogos/comprobantes-electronicos/form";
+    return "catalogos/comprobantes-electronicos/form";
   }
   
   @Secured({"ROLE_ADMIN"})

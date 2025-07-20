@@ -185,10 +185,10 @@ public class FacturadorController {
             model.addAttribute("TXT_PRECIO_FRACCIONES", "Precio fracció");
             model.addAttribute("TIPO_VENTA", "B");
           } 
-          return "/facturacion/facturador_avanzado";
+          return "facturacion/facturador_avanzado";
         } 
         model.addAttribute("V_FACTURADOR", "V2");
-        return "/facturacion/facturador";
+        return "facturacion/facturador";
       } 
       return "redirect:/proformas/seleccionar-terminal?urlRetorno=/facturar/?f=" + f;
     } 

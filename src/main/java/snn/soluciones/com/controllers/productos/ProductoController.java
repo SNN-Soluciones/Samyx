@@ -115,7 +115,7 @@ public class ProductoController {
       PageRender<Producto> pageRender = new PageRender("/productos/", ListaProductos);
       model.addAttribute("ListaProductos", ListaProductos);
       model.addAttribute("page", pageRender);
-      return "/catalogos/productos/index";
+      return "catalogos/productos/index";
     } 
     return "redirect:/";
   }
@@ -143,8 +143,8 @@ public class ProductoController {
       model.addAttribute("listaImpuestos", listaImpuestos);
       model.addAttribute("listaCodigosTarifasIva", listaCodigosTarifasIva);
       if (session.getAttribute("SESSION_TIPO_CLIENTE").toString().equalsIgnoreCase("A"))
-        return "/catalogos/productos/formCantidad"; 
-      return "/catalogos/productos/formFraccion";
+        return "catalogos/productos/formCantidad"; 
+      return "catalogos/productos/formFraccion";
     } 
     return "redirect:/";
   }
@@ -179,8 +179,8 @@ public class ProductoController {
       session.setAttribute("SESSION_PRODUCTO_FRACCIONES_POR_UNIDAD", producto.getFraccionesPorUnidad());
       model.addAttribute("productoId", id);
       if (session.getAttribute("SESSION_TIPO_CLIENTE").toString().equalsIgnoreCase("A"))
-        return "/catalogos/productos/formCantidad"; 
-      return "/catalogos/productos/formFraccion";
+        return "catalogos/productos/formCantidad"; 
+      return "catalogos/productos/formFraccion";
     } 
     return "redirect:/";
   }
@@ -260,7 +260,7 @@ public class ProductoController {
       sql = "SELECT * FROM v_kardex WHERE emisor_id=:emisorId AND producto_id=:productoId ORDER BY fecha_movimiento DESC";
       List<Map<String, Object>> listaKardex = namedParameterJdbcTemplate.queryForList(sql, (SqlParameterSource)parameters);
       model.addAttribute("listaKardex", listaKardex);
-      return "/catalogos/productos/kardex";
+      return "catalogos/productos/kardex";
     } 
     return null;
   }
@@ -296,7 +296,7 @@ public class ProductoController {
   public String getAllImpuestos(Model model, @RequestParam(name = "id", required = false) Long id) {
     List<CProductoImpuesto> listaImpuestos = this._productoImpuestoService.findAllByIdProducto(id);
     model.addAttribute("listaImpuestos", listaImpuestos);
-    return "/catalogos/productos/impuestos";
+    return "catalogos/productos/impuestos";
   }
   
   @PostMapping({"/impuesto/get-all-facturador"})
@@ -306,7 +306,7 @@ public class ProductoController {
     model.addAttribute("listaImpuestos", listaImpuestos);
     model.addAttribute("listaExoneracionOAutorizacion", listaExoneracionOAutorizacion);
     model.addAttribute("productoId", id);
-    return "/catalogos/productos/impuestos-facturador";
+    return "catalogos/productos/impuestos-facturador";
   }
   
   @PostMapping({"/delete"})

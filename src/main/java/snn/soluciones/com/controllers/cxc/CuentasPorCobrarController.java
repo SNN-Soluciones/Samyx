@@ -89,7 +89,7 @@ public class CuentasPorCobrarController {
       PageRender<FEFacturasCXC> pageRender = new PageRender("/cxc/", ListaFacturas);
       model.addAttribute("ListaFacturas", ListaFacturas);
       model.addAttribute("page", pageRender);
-      return "/cuentas-por-cobrar/clientes/index";
+      return "cuentas-por-cobrar/clientes/index";
     } 
     return "redirect:/";
   }
@@ -99,7 +99,7 @@ public class CuentasPorCobrarController {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null) {
       FEFacturasCXC cxc = new FEFacturasCXC();
       model.addAttribute("cxc", cxc);
-      return "/cuentas-por-cobrar/clientes/new-cxc";
+      return "cuentas-por-cobrar/clientes/new-cxc";
     } 
     return "redirect:/";
   }
@@ -142,7 +142,7 @@ public class CuentasPorCobrarController {
       model.addAttribute("clienteId", cliente.getId());
       model.addAttribute("listaMedioDePago", listaMedioDePago);
       model.addAttribute("standardDate", new Date());
-      return "/cuentas-por-cobrar/clientes/form";
+      return "cuentas-por-cobrar/clientes/form";
     } 
     return "redirect:/";
   }
@@ -153,7 +153,7 @@ public class CuentasPorCobrarController {
       Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
       List<FEFacturasCXC> listaFacturasPendientes = this._cxcFacturasService.findAllCXCDetalle(emisorId, c, e);
       model.addAttribute("listaFacturasPendientes", listaFacturasPendientes);
-      return "/cuentas-por-cobrar/clientes/facturas-pendientes";
+      return "cuentas-por-cobrar/clientes/facturas-pendientes";
     } 
     return "";
   }
@@ -198,7 +198,7 @@ public class CuentasPorCobrarController {
       mediosDePago.add(Long.valueOf(Long.parseLong("101")));
       List<CMedioDePago> listaMedioDePago = this._medioDePagoService.findAllIn(mediosDePago);
       model.addAttribute("listaMedioDePago", listaMedioDePago);
-      return "/cuentas-por-cobrar/clientes/cargar-factuar-cancelar-cxc";
+      return "cuentas-por-cobrar/clientes/cargar-factuar-cancelar-cxc";
     } 
     return "redirect:/";
   }

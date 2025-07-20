@@ -77,7 +77,7 @@ public class FacturaCompraController {
       PageRender<CInventarioMovimiento> pageRender = new PageRender("/inventario/factura-compra/", ListaMovimientos);
       model.addAttribute("ListaMovimientos", ListaMovimientos);
       model.addAttribute("page", pageRender);
-      return "/catalogos/productos/inventario/factura-compra/index";
+      return "catalogos/productos/inventario/factura-compra/index";
     } 
     return "redirect:/";
   }
@@ -109,7 +109,7 @@ public class FacturaCompraController {
         model.addAttribute("TXT_PRECIO_FRACCIONES", "Precio fracción");
         model.addAttribute("TIPO_VENTA", "B");
       } 
-      return "/catalogos/productos/inventario/factura-compra/form";
+      return "catalogos/productos/inventario/factura-compra/form";
     } 
     return "redirect:/";
   }
@@ -122,7 +122,7 @@ public class FacturaCompraController {
       List<Moneda> listaMonedas = this._monedaService.findAll();
       model.addAttribute("listaMonedas", listaMonedas);
       model.addAttribute("inventario", inventario);
-      return "/catalogos/productos/inventario/factura-compra/view";
+      return "catalogos/productos/inventario/factura-compra/view";
     } 
     return "redirect:/";
   }

@@ -80,7 +80,7 @@ public class ControlCajasController {
       PageRender<ControlCaja> pageRender = new PageRender("/control-cajas/", ListaCajas);
       model.addAttribute("ListaCajas", ListaCajas);
       model.addAttribute("page", pageRender);
-      return "/catalogos/control-cajas/index";
+      return "catalogos/control-cajas/index";
     } 
     return "redirect:/";
   }
@@ -155,7 +155,7 @@ public class ControlCajasController {
       model.addAttribute("cxcColonesCheques", Double.valueOf(0.0D));
       model.addAttribute("cxcDolaresCheques", Double.valueOf(0.0D));
       model.addAttribute("cxcEurosCheques", Double.valueOf(0.0D));
-      return "/catalogos/control-cajas/form";
+      return "catalogos/control-cajas/form";
     } 
     return "redirect:/";
   }
@@ -345,8 +345,8 @@ public class ControlCajasController {
       model.addAttribute("totalDepositosEuros", totalDepositosEuros);
       model.addAttribute("controlCaja", controlCaja);
       if (request.isUserInRole("ROLE_CAJAS_FULL"))
-        return "/catalogos/control-cajas/form-completo"; 
-      return "/catalogos/control-cajas/form";
+        return "catalogos/control-cajas/form-completo"; 
+      return "catalogos/control-cajas/form";
     } 
     return "redirect:/";
   }
@@ -397,7 +397,7 @@ public class ControlCajasController {
       model.addAttribute("listaMonedas", listaMonedas);
       model.addAttribute("CAJA_ID", cajaId);
       model.addAttribute("listaMovimientos", listaMovimientos);
-      return "/catalogos/control-cajas/movimientos-efectivo/index";
+      return "catalogos/control-cajas/movimientos-efectivo/index";
     } 
     return "redirect:/";
   }
