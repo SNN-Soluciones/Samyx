@@ -56,9 +56,4 @@ ENV TZ=America/Costa_Rica
 # Exponer puerto
 EXPOSE 8080
 
-# Health check simplificado
-HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=5 \
-  CMD curl -f http://localhost:8080/login || exit 1
-
-# Comando de arranque
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
