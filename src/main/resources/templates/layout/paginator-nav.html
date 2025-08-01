@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="paginator" class="paginator-nav" th:if="${page != null}">
+    <hr>
+    <!-- Información de paginación -->
+    <ul class="pagination">
+        <li class="detalle-pagina">
+            <span th:text="#{txt.pag.mostrando}">Mostrando</span>
+            <span class="badge badge-primary" th:text="${page.paginaActual}"></span>
+            <span th:text="#{txt.pag.de}">de</span>
+            <span class="badge badge-primary" th:text="${page.totalPaginas}"></span>
+            <span th:text="#{txt.pag.paginas}">páginas</span>
+            &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
+            <span th:text="#{txt.pag.total.registros}">Total de registros</span>
+            <span class="badge badge-primary" th:text="${page.totalElements}"></span>
+        </li>
+    </ul>
+
+    <!-- Controles de paginación -->
+    <ul class="pagination">
+        <!-- Primera página -->
+        <li class="page-item" th:class="${page.first? 'page-item disabled': 'page-item'}">
+                <span class="page-link" th:if="${page.first}">
+                    <i class="fas fa-angle-double-left"></i>
+                    <span class="d-none d-sm-inline" th:text="#{txt.pag.primera}">Primera</span>
+                </span>
+            <a class="page-link"
+               th:if="${not page.first}"
+               th:href="@{${page.url}(page=0,q=${param.q},e=${param.e})}">
+                <i class="fas fa-angle-double-left"></i>
+                <span class="d-none d-sm-inline" th:text="#{txt.pag.primera}">Primera</span>
+            </a>
+        </li>
+
+        <!-- Página anterior -->
+        <li class="page-item" th:class="${not page.hasPrevious? 'page-item disabled': 'page-item'}">
+                <span class="page-link" th:if="${not page.hasPrevious}">
+                    <i class="fas fa-angle-left"></i>
+                </span>
+            <a class="page-link"
+               th:if="${page.hasPrevious}"
+               th:href="@{${page.url}(page=${page.paginaActual-2},q=${param.q},e=${param.e})}">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        </li>
+
+        <!-- Números de página -->
+        <li class="page-item"
+            th:each="item : ${page.paginas}"
+            th:class="${item.actual? 'page-item active': 'page-item'}">
+                <span class="page-link"
+                      th:if="${item.actual}"
+                      th:text="${item.numero}"></span>
+            <a class="page-link"
+               th:if="${not item.actual}"
+               th:href="@{${page.url}(page=${item.numero-1},q=${param.q},e=${param.e})}"
+               th:text="${item.numero}"></a>
+        </li>
+
+        <!-- Página siguiente -->
+        <li class="page-item" th:class="${not page.hasNext? 'page-item disabled': 'page-item'}">
+                <span class="page-link" th:if="${not page.hasNext}">
+                    <i class="fas fa-angle-right"></i>
+                </span>
+            <a class="page-link"
+               th:if="${page.hasNext}"
+               th:href="@{${page.url}(page=${page.paginaActual},q=${param.q},e=${param.e})}">
+                <i class="fas fa-angle-right"></i>
+            </a>
+        </li>
+
+        <!-- Última página -->
+        <li class="page-item" th:class="${page.last? 'page-item disabled': 'page-item'}">
+                <span class="page-link" th:if="${page.last}">
+                    <span class="d-none d-sm-inline" th:text="#{txt.pag.ultima}">Última</span>
+                    <i class="fas fa-angle-double-right"></i>
+                </span>
+            <a class="page-link"
+               th:if="${not page.last}"
+               th:href="@{${page.url}(page=${page.totalPaginas-1},q=${param.q},e=${param.e})}">
+                <span class="d-none d-sm-inline" th:text="#{txt.pag.ultima}">Última</span>
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+<!-- Antes del cierre del body -->
+<link th:href="@{/css/pages/layout/paginator.css}" rel="stylesheet" />
+<script th:src="@{/js/pages/layout/paginator.js}"></script>
+</body>
+</html>

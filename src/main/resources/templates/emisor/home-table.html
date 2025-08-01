@@ -266,7 +266,7 @@
       </div>
 
       <!-- Paginación -->
-      <nav th:replace="~{paginator-nav :: paginator}"></nav>
+      <nav th:replace="~{layout/paginator-nav :: paginator}"></nav>
 
       <!-- Botón flotante para móviles -->
       <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"
