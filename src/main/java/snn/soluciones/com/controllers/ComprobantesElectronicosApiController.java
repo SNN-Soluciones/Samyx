@@ -40,13 +40,13 @@ public class ComprobantesElectronicosApiController {
   @Autowired
   private IEmisorService _emisorService;
   
-  @Value("${api.jmata.download.docs}")
+  @Value("${api.snnsoluciones.download.docs}")
   private String urlApiDownloadDocs;
   
-  @Value("${api.jmata.imprimir.pdf}")
+  @Value("${api.snnsoluciones.imprimir.pdf}")
   private String urlApiImprimirPdf;
   
-  @Value("${api.jmata.reenviar.xmls}")
+  @Value("${api.snnsoluciones.reenviar.xmls}")
   private String urlApiReenviarXmls;
   
   @Secured({"ROLE_ADMIN"})

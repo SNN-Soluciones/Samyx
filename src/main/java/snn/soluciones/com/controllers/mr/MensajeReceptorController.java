@@ -57,17 +57,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping({"/mensaje-receptor"})
 @Secured({"ROLE_ADMIN", "ROLE_USER"})
 public class MensajeReceptorController {
-  @Value("${api.jmata.mensaje.receptor}")
+  @Value("${api.snnsoluciones.mensaje.receptor}")
   private String urlApiMensajeReceptor;
   
-  @Value("${api.jmata.download.docs}")
+  @Value("${api.snnsoluciones.download.docs}")
   private String urlApiDownloadXml;
   
-  @Value("${api.jmata.consulta.docs}")
+  @Value("${api.snnsoluciones.consulta.docs}")
   private String urlApiConsultaDocs;
   
-  @Value("${api.jmata.consulta.cualquier.doc}")
-  private String apiJmataConsultaCualquierDoc;
+  @Value("${api.snnsoluciones.consulta.cualquier.doc}")
+  private String apiSnnsolucionesConsultaCualquierDoc;
   
   @Autowired
   private IEmisorService _emisorService;
@@ -174,7 +174,7 @@ public class MensajeReceptorController {
           jm = jm + "\"clave\":\"" + mr.getClave() + "\"";
           jm = jm + "}";
           CloseableHttpClient client = HttpClients.createDefault();
-          HttpPost httpPost = new HttpPost(this.apiJmataConsultaCualquierDoc);
+          HttpPost httpPost = new HttpPost(this.apiSnnsolucionesConsultaCualquierDoc);
           try {
             String json = jm;
             StringEntity entity = new StringEntity(json, "UTF-8");

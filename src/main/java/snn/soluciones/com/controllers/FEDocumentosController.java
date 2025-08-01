@@ -54,19 +54,19 @@ public class FEDocumentosController {
   @Autowired
   private IFEBitacoraService _bitacoraService;
   
-  @Value("${api.jmata.download.docs}")
+  @Value("${api.snnsoluciones.download.docs}")
   private String urlApiDownloadXml;
   
-  @Value("${api.jmata.recepcion.nd.nc}")
+  @Value("${api.snnsoluciones.recepcion.nd.nc}")
   private String urlApiRecepcionNdNc;
   
-  @Value("${api.jmata.consulta.docs}")
+  @Value("${api.snnsoluciones.consulta.docs}")
   private String urlApiConsultaDocs;
   
-  @Value("${api.jmata.reenviar.xmls}")
+  @Value("${api.snnsoluciones.reenviar.xmls}")
   private String urlApiReenviarXmls;
   
-  @Value("${api.jmata.imprimir.pdf}")
+  @Value("${api.snnsoluciones.imprimir.pdf}")
   private String urlApiImprimirPdf;
   
   @Autowired

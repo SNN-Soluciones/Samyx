@@ -40,8 +40,8 @@ import org.xml.sax.SAXException;
 
 @Controller
 public class ConsultarComprobantesController {
-  @Value("${api.jmata.consulta.cualquier.doc}")
-  private String apiJmataConsultaCualquierDoc;
+  @Value("${api.snnsoluciones.consulta.cualquier.doc}")
+  private String apiSnnsolucionesConsultaCualquierDoc;
   
   @Autowired
   private IEmisorService _emisorService;
@@ -68,7 +68,7 @@ public class ConsultarComprobantesController {
         j = j + "\"clave\":\"" + clave.trim() + "\"";
         j = j + "}";
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(this.apiJmataConsultaCualquierDoc);
+        HttpPost httpPost = new HttpPost(this.apiSnnsolucionesConsultaCualquierDoc);
         try {
           String json = j;
           StringEntity entity = new StringEntity(json, "UTF-8");

@@ -102,8 +102,8 @@ public class FacturadorController {
   
   private final Logger log = LoggerFactory.getLogger(getClass());
   
-  @Value("${api.jmata.recepcion}")
-  private String apiJmataRecepcion;
+  @Value("${api.snnsoluciones.recepcion}")
+  private String apiSnnsolucionesRecepcion;
   
   @GetMapping({"/"})
   public String form(Model model, HttpSession session, Authentication auth, @RequestParam(name = "f", defaultValue = "") String f, HttpServletRequest request) {

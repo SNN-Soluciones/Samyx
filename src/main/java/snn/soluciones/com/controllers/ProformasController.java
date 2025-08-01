@@ -221,8 +221,8 @@ public class ProformasController {
   
   private final Logger log = LoggerFactory.getLogger(getClass());
   
-  @Value("${api.jmata.recepcion}")
-  private String apiJmataRecepcion;
+  @Value("${api.snnsoluciones.recepcion}")
+  private String apiSnnsolucionesRecepcion;
   
   @Autowired
   public DataSource dataSource;
@@ -552,7 +552,7 @@ public class ProformasController {
       tipoClienteProveedor = "P"; 
     SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     CloseableHttpClient client = HttpClients.createDefault();
-    HttpPost httpPost = new HttpPost(this.apiJmataRecepcion);
+    HttpPost httpPost = new HttpPost(this.apiSnnsolucionesRecepcion);
     CloseableHttpResponse responseApi = null;
     HttpEntity entity2 = null;
     ObjectMapper objectMapper = null;
