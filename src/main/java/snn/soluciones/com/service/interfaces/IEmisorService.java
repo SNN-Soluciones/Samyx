@@ -6,6 +6,8 @@ import snn.soluciones.com.models.entity.Emisor;
 
 public interface IEmisorService {
   Emisor findEmisorByIdentificacion(String paramString1, String paramString2);
+
+  Emisor findEmisorOnlyIdentificacion(String paramString);
   
   List<Emisor> findAll();
   

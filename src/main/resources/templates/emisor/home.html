@@ -1,106 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/layout :: head}"></head>
-<body class="fix-header card-no-border logo-center">
-
+<head th:replace="~{layout/layout :: head}">
+	<title>Empresas - SAMYX</title>
+</head>
+<body>
 <div id="main-wrapper">
+	<!-- Header -->
+	<header th:replace="~{layout/layout :: header}"></header>
 
-<header th:replace="~{layout/layout :: header}"></header>
-<aside th:replace="~{layout/layout :: aside}"></aside>
+	<!-- Fragmento aside vacío para compatibilidad -->
+	<aside th:fragment="sidebar" style="display: none;"></aside>
 
-
-
-<!-- ============================================================== -->
-<!-- Page wrapper  -->
-<!-- ============================================================== -->
-<div class="page-wrapper">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Container fluid  -->
-    <!-- ============================================================== -->
-    <div class="container-fluid">
-        <!-- ============================================================== -->
-        <!-- Start Page Content -->
-        <!-- ============================================================== -->
-
-        
-        <div class="row justify-content-md-center m-t-10">
-       
-        
-		  <div class="col-sm-4" th:each="k: ${listaEmisor}" style="text-align: center;">
-		    <div class="card card-outline-success" th:classappend="${!k.emisor.statusEmpresa} ? 'card-inverse card-danger'">
-		    
-		      <div class="card-header">
-                  <h4 class="m-b-0 text-white" th:text="${k.emisor.nombreRazonSocial}"></h4>
-              </div>
-		      <div class="card-body">
-		      
-		        <ul class="list-group m-b-10">
-	        		<li class="list-group-item item-emisor-inicio"><span class="font-weight-bold">[(#{txt.identificacion})]: </span>  [(${k.emisor.identificacion})]</li>
-	        		<li class="list-group-item item-emisor-inicio"><span class="font-weight-bold">[(#{txt.correo})]: </span> [(${k.emisor.email})]</li>
-	        		<li th:if="${k.emisor.fechaCaducidadCert != null and #strings.length(k.emisor.fechaCaducidadCert)>0}" class="list-group-item item-emisor-inicio"><span class="font-weight-bold">Fecha caducidad llave criptográfica: </span>
-	        			
-                             <!-- ✅ CORRECTO - Usar #dates directamente -->
-									<span class="fecha-caducidad-criptografica">
-											<p th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}" />
-									</span>
-
-	        		</li>
-	        	</ul>
-		        
-		        <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" style="color:#FFF !important" class="btn btn-warning btn-sm m-r-10" th:href="@{/emisor/edit/}+${k.emisor.id}" th:attr="title=#{btn.actualizar.title}">
-		        	<i class="fas fa-edit"></i>&nbsp;[(#{txt.modificar.empresa})]
-		        </a>
-		        
-		        <a style="color:#FFF !important" class="btn btn-success btn-sm" th:href="@{/emisor/ingresar/}+${k.emisor.id}" th:attr="title=#{txt.accesar.empresa}" >
-                		<i class="fas fa-external-link-alt"></i>&nbsp;[(#{txt.ingresar.empresa})]
-                	</a>	
-     
-		      </div>
-		    </div>
-		  </div>
-      
+	<!-- Page wrapper -->
+	<div class="page-wrapper">
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="page-header-content">
+				<h1 class="page-title">
+					<i class="fas fa-building"></i>
+					Mis Empresas
+				</h1>
+				<p class="page-subtitle">Selecciona una empresa para continuar</p>
+			</div>
+			<div class="page-header-actions">
+				<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"
+					 class="btn-action btn-gradient"
+					 th:href="@{/emisor/registrar-empresa/}">
+					<i class="fas fa-plus-circle"></i>
+					<span>Registrar Nueva Empresa</span>
+				</a>
+			</div>
 		</div>
-    <nav th:replace="~{paginator-nav :: paginator}"></nav>
-		
-		<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" data-toggle="tooltip" data-placement="left" class="btn btn-success btn-registrar-empresa color-blanco" title=" Registre una nueva empresa" th:href="@{/emisor/registrar-empresa/}"><i class="fas fa-plus-circle"></i> Registrar nueva empresa</a>
-		    
-        
-        <!-- ============================================================== -->
-        <!-- End PAge Content -->
-        <!-- ============================================================== -->
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <footer th:replace="~{layout/layout :: footer}"></footer>
-    <!-- ============================================================== -->
-    <!-- End footer -->
-    <!-- ============================================================== -->
+
+		<!-- Container -->
+		<div class="container-fluid">
+			<!-- Grid de Empresas -->
+			<div class="empresas-grid">
+				<div class="empresa-card" th:each="k: ${listaEmisor}"
+						 th:classappend="${!k.emisor.statusEmpresa} ? 'empresa-inactive' : ''">
+
+					<!-- Card Header -->
+					<div class="empresa-header">
+						<div class="empresa-icon">
+							<i class="fas fa-building"></i>
+						</div>
+						<div class="empresa-status"
+								 th:classappend="${k.emisor.statusEmpresa} ? 'status-active' : 'status-inactive'">
+							<span th:text="${k.emisor.statusEmpresa} ? 'Activa' : 'Inactiva'"></span>
+						</div>
+					</div>
+
+					<!-- Card Body -->
+					<div class="empresa-body">
+						<h3 class="empresa-name" th:text="${k.emisor.nombreRazonSocial}"></h3>
+
+						<div class="empresa-info">
+							<div class="info-item">
+								<i class="fas fa-id-card"></i>
+								<span class="info-label">Identificación:</span>
+								<span class="info-value" th:text="${k.emisor.identificacion}"></span>
+							</div>
+
+							<div class="info-item">
+								<i class="fas fa-envelope"></i>
+								<span class="info-label">Correo:</span>
+								<span class="info-value" th:text="${k.emisor.email}"></span>
+							</div>
+
+							<div class="info-item"
+									 th:if="${k.emisor.fechaCaducidadCert != null and #strings.length(k.emisor.fechaCaducidadCert) > 0}">
+								<i class="fas fa-key"></i>
+								<span class="info-label">Llave vence:</span>
+								<span class="info-value fecha-caducidad"
+											th:text="${#dates.format(k.emisor.fechaCaducidadCert, 'dd/MM/yyyy')}"></span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card Actions -->
+					<div class="empresa-actions">
+						<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"
+							 class="btn-card btn-edit"
+							 th:href="@{/emisor/edit/}+${k.emisor.id}"
+							 data-tooltip="Modificar empresa">
+							<i class="fas fa-edit"></i>
+							<span>Modificar</span>
+						</a>
+
+						<a class="btn-card btn-access"
+							 th:href="@{/emisor/ingresar/}+${k.emisor.id}"
+							 data-tooltip="Ingresar a la empresa">
+							<i class="fas fa-sign-in-alt"></i>
+							<span>Ingresar</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Empty State -->
+			<div class="empty-state" th:if="${#lists.isEmpty(listaEmisor)}">
+				<div class="empty-icon">
+					<i class="fas fa-building"></i>
+				</div>
+				<h3>No hay empresas registradas</h3>
+				<p>Comienza registrando tu primera empresa</p>
+				<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"
+					 class="btn-gradient"
+					 th:href="@{/emisor/registrar-empresa/}">
+					<i class="fas fa-plus-circle"></i>
+					Registrar Nueva Empresa
+				</a>
+			</div>
+
+			<!-- Paginación -->
+			<nav th:replace="~{paginator-nav :: paginator}"></nav>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer th:replace="~{layout/layout :: footer}"></footer>
 </div>
-<!-- ============================================================== -->
-<!-- End Page wrapper  -->
-<!-- ============================================================== -->
 
-
-
-
-</div>
-
+<!-- Scripts -->
 <div th:replace="~{layout/layout :: scripts}"></div>
 
+<!-- CSS específico de esta página -->
+<link th:href="@{/css/pages/emisor-home.css}" rel="stylesheet" />
 
-
-
-
+<!-- JavaScript específico de esta página -->
+<script th:src="@{/js/pages/emisor-home.js}"></script>
 </body>
 </html>

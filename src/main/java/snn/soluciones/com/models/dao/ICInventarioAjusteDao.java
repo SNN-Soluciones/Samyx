@@ -12,7 +12,15 @@ public interface ICInventarioAjusteDao extends CrudRepository<CInventarioAjuste,
   
   @Query("SELECT c FROM CInventarioAjuste c INNER JOIN c.emisor e WHERE e.id = ?1 AND c.id=?2")
   CInventarioAjuste findByEmisorIdAndIdFactura(Long paramLong1, Long paramLong2);
-  
-  @Query("SELECT MAX(c) FROM CInventarioAjuste c INNER JOIN c.emisor e WHERE e.id = ?1")
-  CInventarioAjuste numeroAjuste(Long paramLong);
+
+  @Query("""
+  SELECT c FROM CInventarioAjuste c 
+  WHERE c.emisor.id = ?1 
+  AND c.id = (
+    SELECT MAX(c2.id) 
+    FROM CInventarioAjuste c2 
+    WHERE c2.emisor.id = ?1
+  )
+""")
+  CInventarioAjuste numeroAjuste(Long emisorId);
 }

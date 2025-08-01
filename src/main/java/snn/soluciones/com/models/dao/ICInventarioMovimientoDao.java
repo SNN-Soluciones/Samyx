@@ -12,7 +12,15 @@ public interface ICInventarioMovimientoDao extends CrudRepository<CInventarioMov
   
   @Query("SELECT c FROM CInventarioMovimiento c INNER JOIN c.emisor e INNER JOIN c.proveedor p WHERE e.id = ?1 AND c.id=?2")
   CInventarioMovimiento findByEmisorIdAndIdFactura(Long paramLong1, Long paramLong2);
-  
-  @Query("SELECT MAX(c) FROM CInventarioMovimiento c INNER JOIN c.emisor e WHERE e.id = ?1")
-  CInventarioMovimiento secuenciaFacturaCompra(Long paramLong);
+
+  @Query("""
+  SELECT c FROM CInventarioMovimiento c 
+  WHERE c.emisor.id = ?1 
+  AND c.id = (
+    SELECT MAX(c2.id) 
+    FROM CInventarioMovimiento c2 
+    WHERE c2.emisor.id = ?1
+  )
+""")
+  CInventarioMovimiento secuenciaFacturaCompra(Long emisorId);
 }

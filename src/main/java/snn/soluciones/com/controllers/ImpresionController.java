@@ -1,7 +1,9 @@
 package snn.soluciones.com.controllers;
 
+import snn.soluciones.com.models.entity.ComprobantesElectronicos;
 import snn.soluciones.com.models.entity.Emisor;
 import snn.soluciones.com.models.entity.FEFactura;
+import snn.soluciones.com.service.interfaces.IComprobantesElectronicosService;
 import snn.soluciones.com.service.interfaces.IEmisorService;
 import snn.soluciones.com.service.interfaces.IFEFacturaService;
 import java.awt.image.BufferedImage;
@@ -124,8 +126,8 @@ public class ImpresionController {
       } 
     } 
   }
-  
-  @GetMapping({"/imprimir-factura/{clave}"})
+
+  @GetMapping({"/imprimir-factura/{clave}/"})
   @ResponseBody
   public void imprimirFactura(HttpServletResponse response, HttpSession session, @PathVariable("clave") String clave, @RequestParam(name = "print", required = false) String print, @RequestParam(name = "t", required = false) String tipoImpresion) throws JRException, IOException, SQLException {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null) {
@@ -160,7 +162,7 @@ public class ImpresionController {
         URL base = getClass().getResource("/");
         String baseUrl = base.toString();
         Map<String, Object> parameter = new HashMap<>();
-        parameter.put("IS_IGNORE_PAGINATION", Boolean.valueOf(false));
+        parameter.put("IS_IGNORE_PAGINATION", Boolean.FALSE);
         parameter.put("BASE_URL", baseUrl);
         parameter.put("BASE_URL_LOGO", logo);
         parameter.put("CLAVE_FACTURA", factura.getClave());
@@ -187,10 +189,10 @@ public class ImpresionController {
               db.close(); 
           } catch (SQLException e) {
             System.out.println("Error: desconectando la base de datos.");
-          } 
-        } 
-      } 
-    } 
+          }
+        }
+      }
+    }
   }
   
   private void PrintReportToPrinter(JasperPrint jp, String impresora) throws JRException {

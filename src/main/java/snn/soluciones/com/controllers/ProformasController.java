@@ -206,6 +206,9 @@ public class ProformasController {
   
   @Autowired
   private ICCodigosTarifasIvaService _codigosTarifasIvaService;
+
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
   
   @Value("${path.upload.files.api}")
   private String pathUploadFilesApi;
@@ -223,8 +226,6 @@ public class ProformasController {
   
   @Autowired
   public DataSource dataSource;
-  
-  private JdbcTemplate jdbcTemplate;
   
   @Autowired
   private IFEFacturaRegistroPagosCXCService _cxcRegistroPagosService;
@@ -1123,24 +1124,25 @@ public class ProformasController {
               this._productoService.registroSalidasInvent(cantidadArticulos, producto.getId());
             } 
           } 
-        } 
+        }
         try {
-          this.jdbcTemplate = new JdbcTemplate();
-          SimpleJdbcCall simpleJdbcCall = (new SimpleJdbcCall(this.jdbcTemplate)).withProcedureName("spSegregaImpuestosVentasPorFactura");
+          SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(this.jdbcTemplate)
+              .withProcedureName("spSegregaImpuestosVentasPorFactura");
           Map<String, Object> parameters = new HashMap<>();
           parameters.put("_factura_id_", factura.getId());
-          MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource(parameters);
-          Map<String, Object> returnSp = simpleJdbcCall.execute((SqlParameterSource)mapSqlParameterSource);
-          if (returnSp.get("response").toString().equalsIgnoreCase("1"));
+          simpleJdbcCall.execute(parameters);
+
+          this.log.info("Stored procedure de segregación de impuestos ejecutado correctamente para factura ID: " + factura.getId());
         } catch (Exception e) {
+          this.log.error("Error al ejecutar stored procedure de segregación de impuestos: " + e.getMessage());
           e.printStackTrace();
-        } 
+        }
         response.put("clave", data.path("clave").asText());
         response.put("consecutivo", data.path("consecutivo").asText());
         response.put("fechaEmision", data.path("fechaEmision").asText());
         response.put("fileXmlSign", data.path("fileXmlSign").asText());
         response.put("msj", "");
-        response.put("response", Integer.valueOf(200));
+        response.put("response", 200);
       } 
     } catch (Exception e) {
       e.printStackTrace();
@@ -1149,7 +1151,7 @@ public class ProformasController {
       response.put("fechaEmision", "");
       response.put("fileXmlSign", "");
       response.put("msj", procesarTexto(e.getMessage()));
-      response.put("response", Integer.valueOf(401));
+      response.put("response", 401);
     } finally {
       if (responseApi != null)
         responseApi.close(); 
@@ -1157,7 +1159,7 @@ public class ProformasController {
       objectMapper = null;
       data = null;
     } 
-    return new ResponseEntity(response, HttpStatus.CREATED);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
   
   @PostMapping(value = {"/enviar-proforma"}, produces = {"application/json"})

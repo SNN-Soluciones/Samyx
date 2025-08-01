@@ -1,5 +1,6 @@
 package snn.soluciones.com.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import snn.soluciones.com.models.dao.IFEFacturaDao;
 import snn.soluciones.com.models.entity.FEFactura;
 import snn.soluciones.com.service.interfaces.IFEFacturaService;
@@ -15,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class FEFacturaServiceImpl implements IFEFacturaService {
   @Autowired
   private IFEFacturaDao _dao;
@@ -26,9 +28,22 @@ public class FEFacturaServiceImpl implements IFEFacturaService {
   public void save(FEFactura entity) {
     this._dao.save(entity);
   }
-  
+
   public FEFactura findMaxFacturaByEmisor(Long emisorId) {
-    return this._dao.findMaxFacturaByEmisor(emisorId);
+    List<FEFactura> facturas = this._dao.findMaxFacturaByEmisor(emisorId);
+
+    if (facturas.isEmpty()) {
+      return null;
+    }
+
+    // Si hay duplicados, tomar el más reciente (último ID)
+    if (facturas.size() > 1) {
+      log.warn("ALERTA: Se encontraron {} facturas con el mismo número máximo para emisor {}",
+          facturas.size(), emisorId);
+      // Opcional: enviar alerta por email o Slack
+    }
+
+    return facturas.get(0); // Retorna el primero (más reciente por el ORDER BY)
   }
   
   public Page<FEFactura> findAllByEmisorId(Long id, String q, Pageable pageable) {

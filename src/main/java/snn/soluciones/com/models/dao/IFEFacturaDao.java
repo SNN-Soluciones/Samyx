@@ -12,8 +12,17 @@ import org.springframework.data.repository.query.Param;
 import snn.soluciones.com.models.entity.FEFactura;
 
 public interface IFEFacturaDao extends CrudRepository<FEFactura, Long> {
-  @Query("SELECT MAX(c) FROM FEFactura c WHERE c.emisor.id = ?1")
-  FEFactura findMaxFacturaByEmisor(Long paramLong);
+  @Query("""
+  SELECT c FROM FEFactura c 
+  WHERE c.emisor.id = ?1 
+  AND c.numeroFactura = (
+    SELECT MAX(c2.numeroFactura) 
+    FROM FEFactura c2 
+    WHERE c2.emisor.id = ?1
+  )
+  ORDER BY c.id DESC
+""")
+  List<FEFactura> findMaxFacturaByEmisor(Long emisorId);
   
   @Query("SELECT c FROM FEFactura c LEFT JOIN c.cliente cl WHERE c.emisor.id = ?1 AND c.estado != 'P' AND (CAST(c.numeroFactura as string) LIKE %?2% OR UPPER(c.cliente.nombreCompleto) LIKE %?2% OR c.cliente.identificacion LIKE %?2% OR c.clave LIKE %?2%)")
   Page<FEFactura> findAllByEmisorId(Long paramLong, String paramString, Pageable paramPageable);

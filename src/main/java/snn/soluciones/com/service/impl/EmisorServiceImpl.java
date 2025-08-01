@@ -17,7 +17,12 @@ public class EmisorServiceImpl implements IEmisorService {
   public Emisor findEmisorByIdentificacion(String identificacion, String tokenAccess) {
     return this._emisorDao.findEmisorByIdentificacion(identificacion, tokenAccess);
   }
-  
+
+  @Override
+  public Emisor findEmisorOnlyIdentificacion(String paramString) {
+    return this._emisorDao.findEmisorOnlyIdentificacion(paramString);
+  }
+
   public List<Emisor> findAll() {
     return (List<Emisor>)this._emisorDao.findAll();
   }
