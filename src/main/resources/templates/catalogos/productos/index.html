@@ -4,212 +4,312 @@
 <body class="fix-header card-no-border logo-center">
 
 <div id="main-wrapper">
+  <header th:replace="~{layout/layout :: header}"></header>
+  <aside th:replace="~{layout/layout :: aside}"></aside>
 
-<header th:replace="~{layout/layout :: header}"></header>
-<aside th:replace="~{layout/layout :: aside}"></aside>
-
-
-
-<!-- ============================================================== -->
-<!-- Page wrapper  -->
-<!-- ============================================================== -->
-<div class="page-wrapper">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <div class="row page-titles">
-        <div class="col-md-5 align-self-center">
-        	<h3 class="text-themecolor" th:text="#{txt.mis.productos}"></h3>
+  <!-- Page wrapper -->
+  <div class="page-wrapper">
+    <!-- Bread crumb -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <div class="page-title">
+          <h1>
+            <i class="fas fa-box"></i>
+            <span th:text="#{txt.productos}">Productos</span>
+          </h1>
         </div>
-        <div class="col-md-7 align-self-center">
+        <div class="page-breadcrumb">
+          <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)" th:href="@{/}" th:text="#{txt.inicio}"></a></li>
-                <li class="breadcrumb-item active" th:text="#{txt.mis.productos}"></li>
+              <li class="breadcrumb-item">
+                <a th:href="@{/home}">
+                  <i class="fas fa-home"></i>
+                  <span th:text="#{txt.inicio}">Inicio</span>
+                </a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                <span th:text="#{txt.productos}">Productos</span>
+              </li>
             </ol>
+          </nav>
         </div>
+      </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Container fluid  -->
-    <!-- ============================================================== -->
+
+    <!-- Container fluid -->
     <div class="container-fluid">
-        <!-- ============================================================== -->
-        <!-- Start Page Content -->
-        <!-- ============================================================== -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                    <div class="text-align-right row">
-                    	<div class="col-md-6"></div>
-	                    <div class="col-md-4">
-	                    	<form autocomplete="off" th:action="@{/productos/}" method="get">
+      <!-- Filtros y acciones -->
+      <div class="action-bar">
+        <div class="action-bar-left">
+          <button type="button" class="btn-action btn-primary" th:onclick="'location.href=\'' + @{/productos/form} + '\''">
+            <i class="fas fa-plus-circle"></i>
+            <span>Nuevo Producto</span>
+          </button>
 
-			                    <div class="input-group">
-								    <input th:value="${param.q}" type="search" name="q" class="form-control input" placeholder="Buscar por nombre o código del producto...">
-								    <div class="input-group-append">
-									      <button class="btn btn-success btn-sm btn-block"  type="submit">
-									        <i class="fa fa-search"></i>
-									      </button>
-								    </div>
-							  	</div>
-			                    
-		                    </form>
-	                    </div>
-                        <div class="col-md-2">
-                    		<a style="padding:4px 12px !important" th:href="@{/productos/form}" class="btn btn-success btn-sm btn-block color-blanco">
-                    			<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;<span th:text="#{btn.nuevo.registro}"></span>
-                    		</a>
-                        </div>
-                    </div>
-                                   
-                    <br>
-                    
-                     <p style="text-align: center;width: 100%;" class="m-t-10" th:if="*{param.q!=null and #strings.length(param.q)>0}">
-	                    	Criterio de búsqueda: <span class="font-weight-bold" th:text="${param.q}"></span> <a style="height: 20px" class="btn btn-danger btn-xs color-blanco" th:href="@{/productos/}"><i class="fas fa-window-close"></i> Cerrar búsqueda</a>
-	                 </p>
-                    
-                    	<div class="table-responsive">
-                             <table class="table color-table table-hover muted-table">
-                                 <thead>
-                                     <tr>
-                                         <th style="width: 10%" th:text="#{txt.codigo.producto}"></th>
-                                         <th style="width: 20%" >Proveedor</th>
-                                         <th style="width: 20%" th:text="#{txt.nombre.producto}"></th>
-                                         <th style="width: 10%" th:text="#{txt.precio}"></th>
-                                         <th style="width: 10%" th:text="#{txt.impuestos}"></th>
-                                         <th style="width: 10%" th:text="#{txt.precio.con.impuestos}"></th>
-                                         <th th:if="${session.SESSION_SISTEMA_FARMACIA == 'N'}" style="width: 10%" th:text="'Inventario actual'"></th>
-                                         <th th:if="${session.SESSION_SISTEMA_FARMACIA == 'S'}" style="width: 10%" th:text="'Inventario unidades'"></th>
-                                         <th th:if="${session.SESSION_SISTEMA_FARMACIA == 'S'}" style="width: 10%" th:text="'Inventario fracciones'"></th>
-                                         <th style="width: 10%" class="text-align-center" th:text="#{txt.acciones}"></th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                     <tr th:each="k: ${ListaProductos}" th:classappend="${k.estadoProducto} == 'D' ? table-danger" >
-                                         <td th:text="${k.codigo}"></td>
-                                         <td th:text="${k.proveedor != null ? k.proveedor.nombreCompleto : 'No asignado'}"></td>
-                                         <td th:text="${k.nombreProducto}"></td>
-                                         <td th:text="${k.moneda.simboloMoneda}+' '+${#numbers.formatDecimal(k.precio, 0, 'POINT', 2, 'COMMA')}"></td>   
-                                         
-                                         <td th:text="${k.moneda.simboloMoneda}+' '+${#numbers.formatDecimal(k.impuestoTotal, 0, 'POINT', 2, 'COMMA')}"></td>
-                                         <td th:text="${k.moneda.simboloMoneda}+' '+${#numbers.formatDecimal(k.precioFinal, 0, 'POINT', 2, 'COMMA')}"></td>
-                                         
-                                         <td th:if="${session.SESSION_SISTEMA_FARMACIA == 'N'}" th:text="${#numbers.formatDecimal(k.inventarioActual, 0, 'POINT', 2, 'COMMA')} +' '+ ${k.unidadDeMedida.simbolo}"></td>
-                                         
-                                         
-                                         <td th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && k.tipoVenta == 'U'}" th:text="${#numbers.formatDecimal(k.inventarioActual, 0, 'POINT', 2, 'COMMA')} +' '+ ${k.unidadDeMedida.simbolo}"></td>
-                                         <td th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && k.tipoVenta == 'F'}" th:text="${#numbers.formatDecimal(k.inventarioActual / k.fraccionesPorUnidad, 0, 'POINT', 2, 'COMMA')} +' '+ ${k.unidadDeMedida.simbolo}"></td>
-                                         
-                                         <td th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && k.tipoVenta == 'F'}" th:text="${#numbers.formatDecimal(k.inventarioActual, 0, 'POINT', 2, 'COMMA')} +' f'"></td>                                         
-                                         <td th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && k.tipoVenta == 'U'}" th:text="'N/A'"></td>
-                                                                        
-                                         <td class="text-align-center" >
-                                         
-                                         	
-                                         	
-                                         	<div class="btn-group dropleft">
-											  <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											    <i class="fas fa-cog m-r-10"></i>Acciones
-											  </button>
-											  <div class="dropdown-menu">
-																				  	
-	                                         	<a class="dropdown-item" th:href="@{/productos/edit/}+${k.id}" th:attr="title=#{btn.actualizar.title}" data-toggle="tooltip">
-	                                         		<i class="fas fa-edit  text-inverse m-r-10"></i> Editar
-	                                         	</a>										
-												
-	                                         	<a href="#" class="btnDeleteRegistro dropdown-item" data-toggle="tooltip" th:attr="title=#{btn.delete.title}, data-id=${k.id}">
-	                                         		<i class="fas fa-trash  text-inverse m-r-10"></i> Borrar
-	                                         	</a>
-	                                         	
-											  </div>
-											</div>
-                                         	                                        	
-                                         </td>
-                                     </tr>
-                                 </tbody>
-                             </table>
-                             <nav th:replace="~{layout/paginator-nav :: paginator}"></nav>
-                         </div>    
-                </div>
-            </div>
+          <button type="button" class="btn-action btn-secondary" id="btnImportarProductos">
+            <i class="fas fa-file-import"></i>
+            <span>Importar</span>
+          </button>
+
+          <button type="button" class="btn-action btn-info" id="btnExportarProductos">
+            <i class="fas fa-file-export"></i>
+            <span>Exportar</span>
+          </button>
         </div>
-        <!-- ============================================================== -->
-        <!-- End PAge Content -->
-        <!-- ============================================================== -->
+
+        <div class="action-bar-right">
+          <div class="search-box">
+            <form method="get" th:action="@{/productos/}" autocomplete="off">
+              <div class="search-input-group">
+                <i class="fas fa-search"></i>
+                <input type="search"
+                       name="q"
+                       class="search-input"
+                       placeholder="Buscar por código, nombre o proveedor..."
+                       th:value="${param.q}">
+                <button type="submit" class="search-button">
+                  <span>Buscar</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas rápidas -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <i class="fas fa-boxes"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${totalProductos}">0</h3>
+            <p class="stat-label">Total Productos</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${productosActivos}">0</h3>
+            <p class="stat-label">Productos Activos</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${productosBajoStock}">0</h3>
+            <p class="stat-label">Bajo Stock</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+            <i class="fas fa-truck"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${totalProveedores}">0</h3>
+            <p class="stat-label">Proveedores</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de productos -->
+      <div class="content-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-list"></i>
+            Lista de Productos
+          </h2>
+          <div class="card-actions">
+            <button class="btn-icon" id="btnRefresh" title="Actualizar">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="btn-icon" id="btnFilter" title="Filtros">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Mensaje cuando hay búsqueda -->
+          <div class="search-results-info" th:if="${param.q}">
+            <p>
+              Resultados de búsqueda para: <strong th:text="${param.q}"></strong>
+              <a th:href="@{/productos/}" class="clear-search">
+                <i class="fas fa-times-circle"></i> Limpiar búsqueda
+              </a>
+            </p>
+          </div>
+
+          <!-- Tabla responsiva -->
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+              <tr>
+                <th class="th-codigo">Código</th>
+                <th class="th-proveedor">Proveedor</th>
+                <th class="th-nombre">Nombre del Producto</th>
+                <th class="th-precio text-right">Precio</th>
+                <th class="th-impuesto text-right">Impuestos</th>
+                <th class="th-precio-total text-right">Precio Total</th>
+                <th class="th-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'N'}">
+                  Stock Actual
+                </th>
+                <th class="th-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'S'}">
+                  Stock Unidades
+                </th>
+                <th class="th-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'S'}">
+                  Stock Fracciones
+                </th>
+                <th class="th-acciones text-center">Acciones</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="producto : ${ListaProductos}"
+                  th:classappend="${producto.estadoProducto == 'D'} ? 'row-inactive' : ''"
+                  th:attr="data-id=${producto.id}">
+
+                <td class="td-codigo">
+                  <span class="codigo-badge" th:text="${producto.codigo}"></span>
+                </td>
+
+                <td class="td-proveedor">
+                  <span th:text="${producto.proveedor != null ? producto.proveedor.nombreCompleto : 'No asignado'}"></span>
+                </td>
+
+                <td class="td-nombre">
+                  <div class="producto-info">
+                    <span class="producto-nombre" th:text="${producto.nombreProducto}"></span>
+                    <span class="producto-estado"
+                          th:if="${producto.estadoProducto == 'D'}"
+                          th:classappend="'estado-inactivo'">
+                                                <i class="fas fa-ban"></i> Desactivado
+                                            </span>
+                  </div>
+                </td>
+
+                <td class="td-precio text-right">
+                  <span class="precio-valor" th:text="${producto.moneda.simboloMoneda}+' '+${#numbers.formatDecimal(producto.precio, 0, 'POINT', 2, 'COMMA')}"></span>
+                </td>
+
+                <td class="td-impuesto text-right">
+                  <span class="impuesto-valor" th:text="${producto.moneda.simboloMoneda}+' '+${#numbers.formatDecimal(producto.impuestoTotal, 0, 'POINT', 2, 'COMMA')}"></span>
+                </td>
+
+                <td class="td-precio-total text-right">
+                  <span class="precio-total-valor" th:text="${producto.moneda.simboloMoneda}+' '+${#numbers.formatDecimal(producto.precioFinal, 0, 'POINT', 2, 'COMMA')}"></span>
+                </td>
+
+                <td class="td-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'N'}">
+                                        <span class="stock-badge"
+                                              th:classappend="${producto.inventarioActual <= 10} ? 'stock-bajo' : 'stock-normal'"
+                                              th:text="${#numbers.formatDecimal(producto.inventarioActual, 0, 'POINT', 2, 'COMMA')} +' '+ ${producto.unidadDeMedida.simbolo}">
+                                        </span>
+                </td>
+
+                <td class="td-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && producto.tipoVenta == 'U'}">
+                  <span class="stock-badge stock-normal" th:text="${#numbers.formatDecimal(producto.inventarioActual, 0, 'POINT', 2, 'COMMA')} +' '+ ${producto.unidadDeMedida.simbolo}"></span>
+                </td>
+                <td class="td-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && producto.tipoVenta == 'F'}">
+                  <span class="stock-badge stock-normal" th:text="${#numbers.formatDecimal(producto.inventarioActual / producto.fraccionesPorUnidad, 0, 'POINT', 2, 'COMMA')} +' '+ ${producto.unidadDeMedida.simbolo}"></span>
+                </td>
+
+                <td class="td-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && producto.tipoVenta == 'F'}">
+                  <span class="stock-badge stock-normal" th:text="${#numbers.formatDecimal(producto.inventarioActual, 0, 'POINT', 2, 'COMMA')} +' f'"></span>
+                </td>
+                <td class="td-inventario text-center" th:if="${session.SESSION_SISTEMA_FARMACIA == 'S' && producto.tipoVenta == 'U'}">
+                  <span class="stock-badge">N/A</span>
+                </td>
+
+                <td class="td-acciones">
+                  <div class="action-buttons">
+                    <button class="btn-table-action btn-view"
+                            th:onclick="'verDetalleProducto(' + ${producto.id} + ')'"
+                            title="Ver detalles">
+                      <i class="fas fa-eye"></i>
+                    </button>
+
+                    <a class="btn-table-action btn-edit"
+                       th:href="@{/productos/edit/{id}(id=${producto.id})}"
+                       title="Editar">
+                      <i class="fas fa-edit"></i>
+                    </a>
+
+                    <button class="btn-table-action btn-delete"
+                            th:onclick="'confirmarEliminarProducto(' + ${producto.id} + ')'"
+                            title="Eliminar"
+                            th:if="${producto.estadoProducto != 'D'}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+
+                    <button class="btn-table-action btn-activate"
+                            th:onclick="'activarProducto(' + ${producto.id} + ')'"
+                            title="Activar"
+                            th:if="${producto.estadoProducto == 'D'}">
+                      <i class="fas fa-check-circle"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <!-- Estado vacío -->
+            <div class="empty-state" th:if="${#lists.isEmpty(ListaProductos)}">
+              <div class="empty-icon">
+                <i class="fas fa-box-open"></i>
+              </div>
+              <h3>No hay productos registrados</h3>
+              <p th:if="${param.q}">No se encontraron productos que coincidan con tu búsqueda</p>
+              <p th:unless="${param.q}">Comienza agregando tu primer producto</p>
+              <button class="btn-primary" th:onclick="'location.href=\'' + @{/productos/form} + '\''">
+                <i class="fas fa-plus-circle"></i>
+                Agregar Producto
+              </button>
+            </div>
+          </div>
+
+          <!-- Paginación -->
+          <nav th:replace="~{layout/paginator-nav :: paginator}"></nav>
+        </div>
+      </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <footer th:replace="~{layout/layout :: footer}"></footer>
-    <!-- ============================================================== -->
-    <!-- End footer -->
-    <!-- ============================================================== -->
+  </div>
+
+  <!-- Footer -->
+  <footer th:replace="~{layout/layout :: footer}"></footer>
 </div>
-<!-- ============================================================== -->
-<!-- End Page wrapper  -->
-<!-- ============================================================== -->
 
-
-
-
+<!-- Modal detalle producto -->
+<div class="modal fade" id="modalDetalleProducto" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalle del Producto</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="detalleProductoContent">
+        <!-- Contenido cargado dinámicamente -->
+      </div>
+    </div>
+  </div>
 </div>
-<input id="csrfToken" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+<!-- Scripts -->
 <div th:replace="~{layout/layout :: scripts}"></div>
 
-<script type="text/javascript">
-var token = $('#csrfToken').val();
+<!-- CSS específico -->
+<link th:href="@{/css/pages/catalogos/productos.css}" rel="stylesheet" />
 
-$(document).on("click", ".btnDeleteRegistro", function(){	
-	 
-	swal({
-		  title: "Confirmación",
-		  text: "Confirme la eliminación del registro, no se podrá recuperar!",
-		  icon: "warning",
-		  buttons: true,
-		  dangerMode: true,
-		})
-		.then((willDelete) => {
-		  if (willDelete) {
-		    
-			  $.ajax({
-			      type: "POST",
-			      cache: false,
-			      beforeSend: function () {},
-			      url: "[(@{/productos/delete})]",
-			      data: {_csrf:token, id:$(this).attr("data-id")},
-			      success: function (data)
-			      {
-			      	if(parseInt(data.response) === 1){		      		
-			      		
-			      		location.reload();
-			      		
-			      	}else{
-			      		swal("",data.msj,"warning");
-			      	}
-			          
-			      }, complete: function () {
-			          //loading_hide();
-			      }, error: function (x, t, m) {
-			          if (t === "timeout") {
-			              
-			          } else {
-			              
-			          }
-			      }
-			  });
-			  
-		  }
-		}); 
-});
-
-</script>
-
-</div>
+<!-- JavaScript específico -->
+<script th:src="@{/js/pages/catalogos/productos.js}"></script>
 </body>
 </html>

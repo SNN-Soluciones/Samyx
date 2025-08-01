@@ -4,195 +4,324 @@
 <body class="fix-header card-no-border logo-center">
 
 <div id="main-wrapper">
+  <header th:replace="~{layout/layout :: header}"></header>
+  <aside th:replace="~{layout/layout :: aside}"></aside>
 
-<header th:replace="~{layout/layout :: header}"></header>
-<aside th:replace="~{layout/layout :: aside}"></aside>
-
-
-
-<!-- ============================================================== -->
-<!-- Page wrapper  -->
-<!-- ============================================================== -->
-<div class="page-wrapper">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <div class="row page-titles">
-        <div class="col-md-5 align-self-center">
-        	 <h3 class="text-themecolor" th:text="#{txt.mis.clientes}"></h3>
+  <!-- Page wrapper -->
+  <div class="page-wrapper">
+    <!-- Bread crumb -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <div class="page-title">
+          <h1>
+            <i class="fas fa-users"></i>
+            <span th:text="#{txt.clientes}">Clientes</span>
+          </h1>
         </div>
-        <div class="col-md-7 align-self-center">
+        <div class="page-breadcrumb">
+          <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)" th:href="@{/}" th:text="#{txt.inicio}"></a></li>
-                <li class="breadcrumb-item active" th:text="#{txt.mis.clientes}"></li>
+              <li class="breadcrumb-item">
+                <a th:href="@{/home}">
+                  <i class="fas fa-home"></i>
+                  <span th:text="#{txt.inicio}">Inicio</span>
+                </a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                <span th:text="#{txt.clientes}">Clientes</span>
+              </li>
             </ol>
+          </nav>
         </div>
+      </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Container fluid  -->
-    <!-- ============================================================== -->
+
+    <!-- Container fluid -->
     <div class="container-fluid">
-        <!-- ============================================================== -->
-        <!-- Start Page Content -->
-        <!-- ============================================================== -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                    <div class="text-align-right row">
-                    	<div class="col-md-6"></div>
-	                    <div class="col-md-4">
-	                    	<form autocomplete="off" th:action="@{/clientes/}" method="get">
+      <!-- Filtros y acciones -->
+      <div class="action-bar">
+        <div class="action-bar-left">
+          <button type="button" class="btn-action btn-primary" th:onclick="'location.href=\'' + @{/clientes/form} + '\''">
+            <i class="fas fa-user-plus"></i>
+            <span>Nuevo Cliente</span>
+          </button>
 
-			                    <div class="input-group">
-								    <input th:value="${param.q}" type="search" name="q" class="form-control input" placeholder="Buscar por nombre o identificación y presione enter...">
-								    <div class="input-group-append">
-									      <button class="btn btn-success btn-sm btn-block"  type="submit">
-									        <i class="fa fa-search"></i>
-									      </button>
-								    </div>
-							  	</div>
-			                    
-		                    </form>
-	                    </div>
-                        <div class="col-md-2">
-                    		<a style="padding:4px 12px !important" th:href="@{/clientes/form}" class="btn btn-success btn-sm btn-block color-blanco">
-                    			<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;<span th:text="#{btn.nuevo.registro}"></span>
-                    		</a>
-                        </div>
-                    </div>
-                                   
-                    <br>
-                    
-                     <p style="text-align: center;width: 100%;" class="m-t-10" th:if="*{param.q!=null and #strings.length(param.q)>0}">
-	                    	Criterio de búsqueda: <span class="font-weight-bold" th:text="${param.q}"></span> <a style="height: 20px" class="btn btn-danger btn-xs color-blanco" th:href="@{/clientes/}"><i class="fas fa-window-close"></i> Cerrar búsqueda</a>
-	                 </p>
+          <button type="button" class="btn-action btn-secondary" id="btnImportarClientes">
+            <i class="fas fa-file-import"></i>
+            <span>Importar</span>
+          </button>
 
-                    	<div class="table-responsive">
-                             <table class="table color-table table-hover muted-table">
-                                 <thead>
-                                     <tr>
-                                         <th style="width: 10%" th:text="#{txt.tipo.identificacion}"></th>
-                                         <th style="width: 10%" th:text="#{txt.identificacion}"></th>
-                                         <th style="width: 20%" th:text="#{txt.nombre.completo}"></th>
-                                         <th style="width: 8%" th:text="#{txt.telefono1}"></th>
-                                         <th style="width: 12%" th:text="#{txt.correo1}"></th>
-                                         <th style="width: 10%" class="text-align-center" th:text="#{txt.acciones}"></th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                     <tr th:each="k: ${ListaClientes}">
-                                         <td th:text="${k.tipoDeIdentificacion.tipoDeIdentificacion}"></td>
-                                         <td th:text="${k.identificacion}"></td>
-                                         <td th:text="${k.nombreCompleto}"></td>
-                                         <td>
-                                         	<span th:remove="tag" th:if="${k.telefono1 != ''}" th:text="'+' + ${k.codigoPais} + ' ' + ${k.telefono1}"></span>
-                                         </td>
-                                         <td th:text="${k.correo1}"></td>                                       
-                                         <td class="text-align-center" >
-                                         	
-                                         	<div class="btn-group dropleft">
-											  <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											    <i class="fas fa-cog m-r-10"></i>Acciones
-											  </button>
-											  <div class="dropdown-menu">
-																				  	
-											  	<a class="dropdown-item" th:href="@{/clientes/edit/}+${k.id}" th:attr="title=#{btn.actualizar.title}" data-toggle="tooltip">
-	                                         		<i class="fas fa-edit  text-inverse m-r-10"></i> Editar
-	                                         	</a>										
-												
-	                                         	<a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" href="#" class="btnDeleteRegistro dropdown-item" data-toggle="tooltip" th:attr="title=#{btn.delete.title}, data-id=${k.id}">
-	                                         		<i class="fas fa-trash  text-inverse m-r-10"></i> Borrar
-	                                         	</a>
-											  </div>
-											</div>
-                                         	                                        	
-                                         </td>
-                                     </tr>
-                                 </tbody>
-                             </table>
-                             <nav th:replace="~{layout/paginator-nav :: paginator}"></nav>
-                         </div>    
-                    </div>
-                </div>
-            </div>
+          <button type="button" class="btn-action btn-info" id="btnExportarClientes">
+            <i class="fas fa-file-export"></i>
+            <span>Exportar</span>
+          </button>
         </div>
-        <!-- ============================================================== -->
-        <!-- End PAge Content -->
-        <!-- ============================================================== -->
+
+        <div class="action-bar-right">
+          <div class="search-box">
+            <form method="get" th:action="@{/clientes/}" autocomplete="off">
+              <div class="search-input-group">
+                <i class="fas fa-search"></i>
+                <input type="search"
+                       name="q"
+                       class="search-input"
+                       placeholder="Buscar por identificación, nombre, correo o teléfono..."
+                       th:value="${param.q}">
+                <button type="submit" class="search-button">
+                  <span>Buscar</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas rápidas -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${totalClientes}">0</h3>
+            <p class="stat-label">Total Clientes</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${clientesActivos}">0</h3>
+            <p class="stat-label">Clientes Activos</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <i class="fas fa-user-clock"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${clientesNuevos}">0</h3>
+            <p class="stat-label">Nuevos este mes</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+            <i class="fas fa-file-invoice-dollar"></i>
+          </div>
+          <div class="stat-content">
+            <h3 class="stat-value" th:text="${totalFacturas}">0</h3>
+            <p class="stat-label">Facturas Emitidas</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de clientes -->
+      <div class="content-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-list"></i>
+            Lista de Clientes
+          </h2>
+          <div class="card-actions">
+            <button class="btn-icon" id="btnRefresh" title="Actualizar">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="btn-icon" id="btnFilter" title="Filtros">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Mensaje cuando hay búsqueda -->
+          <div class="search-results-info" th:if="${param.q}">
+            <p>
+              Resultados de búsqueda para: <strong th:text="${param.q}"></strong>
+              <a th:href="@{/clientes/}" class="clear-search">
+                <i class="fas fa-times-circle"></i> Limpiar búsqueda
+              </a>
+            </p>
+          </div>
+
+          <!-- Tabla responsiva -->
+          <div class="table-container">
+            <table class="modern-table">
+              <thead>
+              <tr>
+                <th class="th-tipo">Tipo ID</th>
+                <th class="th-identificacion">Identificación</th>
+                <th class="th-nombre">Nombre Completo</th>
+                <th class="th-correo">Correo Electrónico</th>
+                <th class="th-telefono">Teléfono</th>
+                <th class="th-provincia">Provincia</th>
+                <th class="th-credito text-center">Crédito</th>
+                <th class="th-estado text-center">Estado</th>
+                <th class="th-acciones text-center">Acciones</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="k : ${ListaClientes}"
+                  th:attr="data-id=${k.id}">
+
+                <td class="td-tipo">
+                  <span class="tipo-badge" th:text="${k.tipoDeIdentificacion.tipoDeIdentificacion}"></span>
+                </td>
+
+                <td class="td-identificacion">
+                  <span class="identificacion-text" th:text="${k.identificacion}"></span>
+                </td>
+
+                <td class="td-nombre">
+                  <div class="cliente-info">
+                    <span class="cliente-nombre" th:text="${k.nombreCompleto}"></span>
+                  </div>
+                </td>
+
+                <td class="td-correo">
+                  <a th:href="'mailto:' + ${k.correo1}"
+                     class="correo-link"
+                     th:if="${k.correo1 != null && !#strings.isEmpty(k.correo1)}">
+                    <i class="fas fa-envelope"></i>
+                    <span th:text="${k.correo1}"></span>
+                  </a>
+                  <span th:unless="${k.correo1 != null && !#strings.isEmpty(k.correo1)}"
+                        class="text-muted">
+                                            Sin correo
+                                        </span>
+                </td>
+
+                <td class="td-telefono">
+                                        <span th:if="${k.telefono1 != null && !#strings.isEmpty(k.telefono1)}"
+                                              class="telefono-text">
+                                            <i class="fas fa-phone"></i>
+                                            <span th:text="'+' + ${k.codigoPais} + ' ' + ${k.telefono1}"></span>
+                                        </span>
+                  <span th:unless="${k.telefono1 != null && !#strings.isEmpty(k.telefono1)}"
+                        class="text-muted">
+                                            Sin teléfono
+                                        </span>
+                </td>
+
+                <td class="td-provincia">
+                  <span th:text="${k.provincia?.nombre ?: 'No especificada'}"></span>
+                </td>
+
+                <td class="td-credito text-center">
+                                        <span class="credito-badge"
+                                              th:classappend="${k.estadoCredito == 'A'} ? 'credito-activo' : 'credito-inactivo'">
+                                            <i th:class="${k.estadoCredito == 'A'} ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+                                            <span th:text="${k.estadoCredito == 'A'} ? 'Sí' : 'No'"></span>
+                                        </span>
+                </td>
+
+                <td class="td-estado text-center">
+                                        <span class="estado-badge estado-activo">
+                                            <span>Activo</span>
+                                        </span>
+                </td>
+
+                <td class="td-acciones">
+                  <div class="action-buttons">
+                    <button class="btn-table-action btn-view"
+                            th:onclick="'verDetalleCliente(' + ${k.id} + ')'"
+                            title="Ver detalles">
+                      <i class="fas fa-eye"></i>
+                    </button>
+
+                    <a class="btn-table-action btn-edit"
+                       th:href="@{/clientes/edit/{id}(id=${k.id})}"
+                       title="Editar">
+                      <i class="fas fa-edit"></i>
+                    </a>
+
+                    <button class="btn-table-action btn-history"
+                            th:onclick="'verHistorialCliente(' + ${k.id} + ')'"
+                            title="Ver historial">
+                      <i class="fas fa-history"></i>
+                    </button>
+
+                    <button class="btn-table-action btn-delete"
+                            th:onclick="'confirmarEliminarCliente(' + ${k.id} + ')'"
+                            title="Eliminar">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <!-- Estado vacío -->
+            <div class="empty-state" th:if="${#lists.isEmpty(ListaClientes)}">
+              <div class="empty-icon">
+                <i class="fas fa-user-slash"></i>
+              </div>
+              <h3>No hay clientes registrados</h3>
+              <p th:if="${param.q}">No se encontraron clientes que coincidan con tu búsqueda</p>
+              <p th:unless="${param.q}">Comienza agregando tu primer cliente</p>
+              <button class="btn-primary" th:onclick="'location.href=\'' + @{/clientes/form} + '\''">
+                <i class="fas fa-user-plus"></i>
+                Agregar Cliente
+              </button>
+            </div>
+          </div>
+
+          <!-- Paginación -->
+          <nav th:replace="~{layout/paginator-nav :: paginator}"></nav>
+        </div>
+      </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <footer th:replace="~{layout/layout :: footer}"></footer>
-    <!-- ============================================================== -->
-    <!-- End footer -->
-    <!-- ============================================================== -->
+  </div>
+
+  <!-- Footer -->
+  <footer th:replace="~{layout/layout :: footer}"></footer>
 </div>
-<!-- ============================================================== -->
-<!-- End Page wrapper  -->
-<!-- ============================================================== -->
 
-
-
-
+<!-- Modal detalle cliente -->
+<div class="modal fade" id="modalDetalleCliente" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalle del Cliente</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="detalleClienteContent">
+        <!-- Contenido cargado dinámicamente -->
+      </div>
+    </div>
+  </div>
 </div>
-<input id="csrfToken" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+<!-- Modal historial cliente -->
+<div class="modal fade" id="modalHistorialCliente" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Historial de Compras</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="historialClienteContent">
+        <!-- Contenido cargado dinámicamente -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
 <div th:replace="~{layout/layout :: scripts}"></div>
 
-<script type="text/javascript">
-var token = $('#csrfToken').val();
+<!-- CSS específico -->
+<link th:href="@{/css/pages/catalogos/clientes.css}" rel="stylesheet" />
 
-
-$(document).on("click", ".btnDeleteRegistro", function(){	
-	 
-	swal({
-		  title: "Confirmación",
-		  text: "Confirme la eliminación del registro, no se podrá recuperar!",
-		  icon: "warning",
-		  buttons: true,
-		  dangerMode: true,
-		}) 
-		.then((willDelete) => {
-		  if (willDelete) {
-		    
-			  $.ajax({
-			      type: "POST",
-			      cache: false,
-			      beforeSend: function () {},
-			      url: "[(@{/clientes/delete})]",
-			      data: {_csrf:token, id:$(this).attr("data-id")},
-			      success: function (data)
-			      {
-			      	if(parseInt(data.response) === 1){		      		
-			      		
-			      		location.reload();
-			      		
-			      	}else{
-			      		swal("",data.msj,"warning");
-			      	}
-			          
-			      }, complete: function () {
-			          //loading_hide();
-			      }, error: function (x, t, m) {
-			          if (t === "timeout") {
-			              
-			          } else {
-			              
-			          }
-			      }
-			  });
-			  
-		  }
-		}); 
-});
-
-</script>
+<!-- JavaScript específico -->
+<script th:src="@{/js/pages/catalogos/clientes.js}"></script>
 </body>
 </html>
