@@ -209,14 +209,14 @@
 
                 <td class="td-documentos text-center">
                   <div class="document-links">
-                    <a th:href="@{${BASE_URL} + ${k.facturaXml}}"
+                    <a th:href="@{'/mr-inbox/' + ${k.facturaXml}}"
                        target="_blank"
                        class="doc-link doc-xml"
                        title="Ver XML">
                       <i class="fas fa-file-code"></i>
                       <span>XML</span>
                     </a>
-                    <a th:href="@{${BASE_URL} + ${k.facturaPdf}}"
+                    <a th:href="@{'/mr-inbox/' + ${k.facturaPdf}}"
                        target="_blank"
                        class="doc-link doc-pdf"
                        title="Ver PDF">

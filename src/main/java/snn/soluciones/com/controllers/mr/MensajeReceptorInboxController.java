@@ -59,7 +59,7 @@ public class MensajeReceptorInboxController {
       PageRender<FEMensajeReceptorAutomatico> pageRender = new PageRender("/mensaje-receptor-inbox/", listaDocumentos);
       model.addAttribute("listaDocumentos", listaDocumentos);
       model.addAttribute("page", pageRender);
-      model.addAttribute("BASE_URL", this.pathUploadFilesApi + "/mr-automatico/");
+      model.addAttribute("BASE_URL", this.pathUploadFilesApi + "mr-automatico/");
       return "mensaje-receptor/mr-inbox/index";
     } 
     return "redirect:/";
@@ -76,7 +76,7 @@ public class MensajeReceptorInboxController {
         String filePath = this.pathUploadFilesApi + "mr-automatico/" + mensajeReceptorInbox.getFacturaXml();
         String facturaXmlFinal = "";
         try {
-          facturaXmlFinal = new String(Files.readAllBytes(Paths.get(filePath, new String[0])));
+          facturaXmlFinal = new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
           e.printStackTrace();
           facturaXmlFinal = "";
