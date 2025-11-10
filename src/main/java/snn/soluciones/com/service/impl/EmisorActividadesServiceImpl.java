@@ -1,60 +1,63 @@
 package snn.soluciones.com.service.impl;
 
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import snn.soluciones.com.dto.GometaActividadDto;
 import snn.soluciones.com.models.dao.IEmisorActividadesDao;
 import snn.soluciones.com.models.entity.EmisorActividades;
 import snn.soluciones.com.models.entity.Emisor;
 import snn.soluciones.com.service.interfaces.IEmisorActividadesService;
-import java.util.List;
+import snn.soluciones.com.service.interfaces.IGometaService;
+
 import java.util.ArrayList;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
 @Service
 public class EmisorActividadesServiceImpl implements IEmisorActividadesService {
 
   @Autowired
-  private IEmisorActividadesDao _dao;
+  private IEmisorActividadesDao emisorActividadesDao;
 
   @Autowired
-  private RestTemplate restTemplate;
+  private IGometaService gometaService;
 
   private static final Logger log = LoggerFactory.getLogger(EmisorActividadesServiceImpl.class);
-  private static final String HACIENDA_API_BASE = "https://api.hacienda.go.cr";
 
-  // MÉTODOS EXISTENTES
+  // ==================== MÉTODOS EXISTENTES ====================
 
   @Override
   public List<EmisorActividades> findAllByEmisorId(Long emisorId) {
-    return this._dao.findAllByEmisorId(emisorId);
+    return this.emisorActividadesDao.findAllByEmisorId(emisorId);
   }
 
   @Override
   @Transactional
   public void deleteByIdAndEmisorId(Long id, Long emisorId) {
-    this._dao.deleteByIdAndEmisorId(id, emisorId);
+    this.emisorActividadesDao.deleteByIdAndEmisorId(id, emisorId);
   }
 
   @Override
   @Transactional
   public void save(EmisorActividades entity) {
-    this._dao.save(entity);
+    this.emisorActividadesDao.save(entity);
   }
 
-  // NUEVOS MÉTODOS - SINCRONIZACIÓN DESDE HACIENDA
+  // ==================== NUEVOS MÉTODOS - GOMETA DGT 4.4 ====================
 
+  /**
+   * Sincroniza las actividades económicas desde la API Gometa (DGT 4.4)
+   *
+   * @param emisor El emisor para el cual se sincronizarán las actividades
+   * @return Lista de actividades guardadas
+   * @throws Exception En caso de error durante la sincronización
+   */
   @Override
   @Transactional
-  public List<EmisorActividades> sincronizarActividadesDesdeHacienda(Emisor emisor) throws Exception {
+  public List<EmisorActividades> sincronizarActividadesDesdeGometa(Emisor emisor) throws Exception {
 
     if (emisor == null || emisor.getIdentificacion() == null) {
       throw new IllegalArgumentException("El emisor y su identificación son requeridos");
@@ -63,115 +66,166 @@ public class EmisorActividadesServiceImpl implements IEmisorActividadesService {
     List<EmisorActividades> actividadesGuardadas = new ArrayList<>();
 
     try {
-      // Consultar al API de Hacienda
-      String url = HACIENDA_API_BASE + "/fe/ae?identificacion=" + emisor.getIdentificacion();
+      log.info("Iniciando sincronización de actividades desde Gometa para: {}",
+          emisor.getIdentificacion());
 
-      HttpHeaders headers = new HttpHeaders();
-      headers.set("User-Agent", "NathBit-POS/1.0");
-      HttpEntity<String> entity = new HttpEntity<>(headers);
-
-      log.info("Consultando actividades en Hacienda para: " + emisor.getIdentificacion());
-
-      ResponseEntity<Object> response = restTemplate.exchange(
-          url,
-          HttpMethod.GET,
-          entity,
-          Object.class
+      // Consultar actividades en Gometa
+      List<GometaActividadDto> actividadesGometa = gometaService.obtenerActividadesPorIdentificacion(
+          emisor.getIdentificacion()
       );
 
-      if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-
-        // Limpiar actividades previas
-        eliminarActividadesDelEmisor(emisor.getId());
-        log.info("Actividades previas del emisor eliminadas");
-
-        // Procesar la respuesta
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseData = objectMapper.convertValue(response.getBody(), JsonNode.class);
-
-        if (responseData.isArray()) {
-          // Si es un array
-          for (JsonNode actividad : responseData) {
-            EmisorActividades ea = construirEmisorActividad(emisor, actividad);
-            if (ea != null) {
-              this._dao.save(ea);
-              actividadesGuardadas.add(ea);
-              log.debug("Actividad guardada: " + ea.getCodigoActividadEmisor());
-            }
-          }
-        } else if (responseData.isObject()) {
-          // Si es un objeto único
-          EmisorActividades ea = construirEmisorActividad(emisor, responseData);
-          if (ea != null) {
-            this._dao.save(ea);
-            actividadesGuardadas.add(ea);
-            log.debug("Actividad guardada: " + ea.getCodigoActividadEmisor());
-          }
-        }
-
-        log.info("Sincronización completada. Actividades guardadas: " + actividadesGuardadas.size());
+      if (actividadesGometa.isEmpty()) {
+        log.warn("No se encontraron actividades en Gometa para: {}",
+            emisor.getIdentificacion());
+        return actividadesGuardadas;
       }
+
+      // Limpiar actividades previas del emisor
+      eliminarActividadesDelEmisor(emisor.getId());
+      log.info("Actividades previas del emisor eliminadas");
+
+      // Procesar y guardar nuevas actividades
+      for (GometaActividadDto actividadGometa : actividadesGometa) {
+        EmisorActividades ea = construirEmisorActividad(emisor, actividadGometa);
+        if (ea != null) {
+          this.emisorActividadesDao.save(ea);
+          actividadesGuardadas.add(ea);
+          log.debug("Actividad guardada: código={}, descripción={}",
+              ea.getCodigoActividadEmisor(),
+              ea.getDetalleActividad());
+        }
+      }
+
+      log.info("Sincronización completada. Total de actividades guardadas: {}",
+          actividadesGuardadas.size());
 
       return actividadesGuardadas;
 
+    } catch (IllegalArgumentException e) {
+      log.error("Error de validación: {}", e.getMessage());
+      throw e;
     } catch (Exception e) {
-      log.error("Error al sincronizar actividades desde Hacienda: " + e.getMessage(), e);
+      log.error("Error al sincronizar actividades desde Gometa: {}", e.getMessage(), e);
+      throw new Exception("Error sincronizando actividades: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Sincroniza un catálogo completo de actividades económicas desde Gometa
+   * Útil para mantener actualizado el catálogo de referencia
+   *
+   * @return Lista de todas las actividades disponibles
+   * @throws Exception En caso de error
+   */
+  @Override
+  @Transactional
+  public List<GometaActividadDto> sincronizarCatalogoCompleto() throws Exception {
+
+    try {
+      log.info("Iniciando sincronización del catálogo completo de actividades desde Gometa");
+
+      List<GometaActividadDto> actividades = gometaService.obtenerTodosLosCodigosActividades();
+
+      log.info("Catálogo sincronizado. Total de actividades: {}", actividades.size());
+
+      return actividades;
+
+    } catch (Exception e) {
+      log.error("Error sincronizando catálogo completo: {}", e.getMessage(), e);
+      throw new Exception("Error sincronizando catálogo: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Valida que un código de actividad sea válido en Gometa
+   *
+   * @param codigoActividad El código a validar
+   * @return true si el código es válido, false en caso contrario
+   * @throws Exception En caso de error
+   */
+  @Override
+  public boolean validarCodigoActividad(String codigoActividad) throws Exception {
+
+    if (codigoActividad == null || codigoActividad.trim().isEmpty()) {
+      return false;
+    }
+
+    try {
+      return gometaService.validarCodigoActividad(codigoActividad);
+    } catch (Exception e) {
+      log.error("Error validando código de actividad: {}", e.getMessage());
       throw e;
     }
   }
 
   /**
-   * Construye una entidad EmisorActividades desde un nodo JSON
+   * Construye una entidad EmisorActividades desde un DTO de Gometa
+   *
+   * @param emisor El emisor propietario de la actividad
+   * @param actividadGometa DTO con los datos de Gometa
+   * @return Entidad EmisorActividades lista para persistir, o null si hay error
    */
-  private EmisorActividades construirEmisorActividad(Emisor emisor, JsonNode nodo) {
+  private EmisorActividades construirEmisorActividad(Emisor emisor, GometaActividadDto actividadGometa) {
 
-    // Extraer código (puede estar en diferentes campos)
-    String codigo = null;
-    if (nodo.has("codigo")) {
-      codigo = nodo.get("codigo").asText();
-    } else if (nodo.has("code")) {
-      codigo = nodo.get("code").asText();
-    } else if (nodo.has("codigoActividad")) {
-      codigo = nodo.get("codigoActividad").asText();
-    }
+    if (actividadGometa == null ||
+        actividadGometa.getCodigo() == null ||
+        actividadGometa.getCodigo().trim().isEmpty()) {
 
-    // Extraer descripción
-    String descripcion = null;
-    if (nodo.has("descripcion")) {
-      descripcion = nodo.get("descripcion").asText();
-    } else if (nodo.has("descripcionActividad")) {
-      descripcion = nodo.get("descripcionActividad").asText();
-    } else if (nodo.has("nombre")) {
-      descripcion = nodo.get("nombre").asText();
-    }
-
-    // Validar que tengamos al menos el código
-    if (codigo == null || codigo.isEmpty()) {
-      log.warn("Actividad sin código identificado, será ignorada");
+      log.warn("DTO de Gometa inválido o sin código");
       return null;
     }
 
-    EmisorActividades ea = new EmisorActividades();
-    ea.setEmisor(emisor);
-    ea.setCodigoActividadEmisor(codigo.trim());
-    ea.setDetalleActividad(descripcion != null ? descripcion.trim() : codigo);
-    ea.setEstado("A");
+    try {
+      EmisorActividades ea = new EmisorActividades();
+      ea.setEmisor(emisor);
+      ea.setCodigoActividadEmisor(actividadGometa.getCodigo().trim());
+      ea.setDetalleActividad(
+          actividadGometa.getDescripcion() != null &&
+              !actividadGometa.getDescripcion().trim().isEmpty()
+              ? actividadGometa.getDescripcion().trim()
+              : actividadGometa.getCodigo()
+      );
+      ea.setEstado("A"); // Estado activo por defecto
 
-    return ea;
+      return ea;
+
+    } catch (Exception e) {
+      log.error("Error construyendo EmisorActividades: {}", e.getMessage());
+      return null;
+    }
   }
 
   @Override
   @Transactional
   public void eliminarActividadesDelEmisor(Long emisorId) {
-    List<EmisorActividades> actividades = this._dao.findAllByEmisorId(emisorId);
-    for (EmisorActividades ea : actividades) {
-      this._dao.delete(ea);
+
+    try {
+      List<EmisorActividades> actividades = this.emisorActividadesDao.findAllByEmisorId(emisorId);
+
+      if (!actividades.isEmpty()) {
+        this.emisorActividadesDao.deleteAll(actividades);
+        log.info("Se eliminaron {} actividades del emisor: {}", actividades.size(), emisorId);
+      }
+
+    } catch (Exception e) {
+      log.error("Error eliminando actividades del emisor {}: {}", emisorId, e.getMessage());
+      throw e;
     }
-    log.info("Actividades eliminadas para emisor: " + emisorId);
   }
 
   @Override
   public long contarActividadesDelEmisor(Long emisorId) {
-    return this._dao.findAllByEmisorId(emisorId).size();
+    return this.emisorActividadesDao.findAllByEmisorId(emisorId).size();
+  }
+
+  /**
+   * Método de compatibilidad con la versión anterior (Hacienda)
+   * Redirige a la nueva sincronización con Gometa
+   */
+  @Override
+  @Transactional
+  public List<EmisorActividades> sincronizarActividadesDesdeHacienda(Emisor emisor) throws Exception {
+    log.warn("Método sincronizarActividadesDesdeHacienda está deprecado. Usando Gometa en su lugar.");
+    return sincronizarActividadesDesdeGometa(emisor);
   }
 }

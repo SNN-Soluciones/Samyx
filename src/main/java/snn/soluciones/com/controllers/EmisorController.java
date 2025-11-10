@@ -213,38 +213,45 @@ public class EmisorController {
     } 
     return "redirect:/login";
   }
-  
+
   @Secured({"ROLE_ADMIN", "ROLE_USER"})
-  @PostMapping({"/actividades"})
+  @GetMapping({"/actividades"})
   public String getActividad(Model model, Authentication auth, HttpSession session) {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null) {
       Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
       List<EmisorActividades> actividadesEmisor = this._emisorActividad.findAllByEmisorId(emisorId);
       model.addAttribute("actividadesEmisor", actividadesEmisor);
       return "emisor/actividades-economicas/index";
-    } 
+    }
     return "";
   }
-  
+
   @Secured({"ROLE_ADMIN", "ROLE_USER"})
   @PostMapping({"/actividades/save"})
-  public ResponseEntity<?> saveActividad(EmisorActividades emisorActividades, Model model, Authentication auth, HttpSession session) {
+  public ResponseEntity<?> saveActividad(@RequestParam String actividadesSeleccionadas, Model model, Authentication auth, HttpSession session) {
     Map<String, Object> response = new HashMap<>();
     if (session.getAttribute("SESSION_EMPRESA_ID") != null) {
       try {
         Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
         Emisor emisor = this._emisorService.findById(emisorId);
-        emisorActividades.setEmisor(emisor);
-        emisorActividades.setEstado("A");
-        this._emisorActividad.save(emisorActividades);
-        response.put("response", Integer.valueOf(200));
+
+        String[] codigos = actividadesSeleccionadas.split(",");
+        for (String codigo : codigos) {
+          EmisorActividades ea = new EmisorActividades();
+          ea.setEmisor(emisor);
+          ea.setCodigoActividadEmisor(codigo.trim());
+          ea.setEstado("A");
+          this._emisorActividad.save(ea);
+        }
+
+        response.put("response", 200);
       } catch (Exception e) {
-        response.put("response", Integer.valueOf(201));
-      } 
+        response.put("response", 201);
+      }
     } else {
-      response.put("response", Integer.valueOf(401));
-    } 
-    return new ResponseEntity(response, HttpStatus.CREATED);
+      response.put("response", 401);
+    }
+    return new ResponseEntity(response, HttpStatus.OK);
   }
   
   @Secured({"ROLE_ADMIN", "ROLE_USER"})

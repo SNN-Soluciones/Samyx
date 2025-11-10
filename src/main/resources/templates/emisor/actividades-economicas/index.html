@@ -1,9 +1,79 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head}"></head>
+<body class="fix-header card-no-border logo-center">
 
-<tr th:each="k : ${actividadesEmisor}">
-	<td th:text="${k.codigoActividadEmisor}"></td>
-	<td th:text="${k.detalleActividad}"></td>
-</tr>
+<div id="main-wrapper">
+	<header th:replace="~{layout/layout :: header}"></header>
+	<aside th:replace="~{layout/layout :: aside}"></aside>
 
+	<div class="page-wrapper">
+		<div class="row page-titles">
+			<div class="col-md-5 align-self-center">
+				<h3 class="text-themecolor">Actividades Económicas</h3>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-body">
+					<button type="button" class="btn btn-success mb-3" id="btnSincronizar">
+						<i class="fas fa-sync"></i> Sincronizar desde Gometa
+					</button>
+
+					<div id="mensajeResultado" style="display:none;"></div>
+
+					<table class="table table-hover table-bordered">
+						<thead>
+						<tr>
+							<th>Código</th>
+							<th>Descripción</th>
+						</tr>
+						</thead>
+						<tbody id="actividadesTable">
+						<tr th:each="k : ${actividadesEmisor}">
+							<td th:text="${k.codigoActividadEmisor}"></td>
+							<td th:text="${k.detalleActividad}"></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script th:inline="javascript">
+	const emisorId = /*[[${#session.getAttribute('SESSION_EMPRESA_ID')}]]*/ 0;
+
+	document.getElementById('btnSincronizar').addEventListener('click', function() {
+		fetch(`/api/v4.4/emisor-actividades/${emisorId}/sincronizar`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(response => response.json())
+		.then(data => {
+			const mensaje = document.getElementById('mensajeResultado');
+			if (data.success) {
+				mensaje.className = 'alert alert-success';
+				mensaje.textContent = `✓ ${data.message} (${data.count} actividades)`;
+				setTimeout(() => location.reload(), 2000);
+			} else {
+				mensaje.className = 'alert alert-danger';
+				mensaje.textContent = `✗ Error: ${data.error}`;
+			}
+			mensaje.style.display = 'block';
+		})
+		.catch(error => {
+			const mensaje = document.getElementById('mensajeResultado');
+			mensaje.className = 'alert alert-danger';
+			mensaje.textContent = `✗ Error: ${error.message}`;
+			mensaje.style.display = 'block';
+		});
+	});
+</script>
+
+</body>
 </html>

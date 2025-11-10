@@ -14,7 +14,7 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
@@ -26,12 +26,10 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        // Base factory con timeouts
-        HttpComponentsClientHttpRequestFactory base = new HttpComponentsClientHttpRequestFactory();
+        SimpleClientHttpRequestFactory base = new SimpleClientHttpRequestFactory();
         base.setConnectTimeout(10_000);
         base.setReadTimeout(10_000);
 
-        // Buffering para poder leer el body varias veces (interceptor + converters/error handler)
         ClientHttpRequestFactory buffering = new BufferingClientHttpRequestFactory(base);
 
         RestTemplate rt = new RestTemplate(buffering);
@@ -47,17 +45,12 @@ public class RestTemplateConfig {
             byte[] body,
             ClientHttpRequestExecution execution) throws IOException {
 
-            // —— Request —— //
             String reqBody = new String(body, StandardCharsets.UTF_8);
             HTTP_LOG.debug(">>> {} {}\n>>> Headers: {}\n>>> Body: {}",
                 request.getMethod(), request.getURI(), request.getHeaders(), reqBody);
 
-            // Ejecutar
             ClientHttpResponse resp = execution.execute(request, body);
 
-            // —— Response —— //
-            // Gracias al BufferingClientHttpRequestFactory podemos leer el body aquí
-            // y el resto de la cadena (converters/error handler) podrá volver a leerlo.
             HttpStatusCode status = resp.getStatusCode();
             HttpHeaders headers = resp.getHeaders();
             String respBody = StreamUtils.copyToString(resp.getBody(), StandardCharsets.UTF_8);
@@ -65,22 +58,18 @@ public class RestTemplateConfig {
             HTTP_LOG.debug("<<< {} \n<<< Headers: {}\n<<< Body: {}",
                 status, headers, respBody);
 
-            // Devolvemos la misma response (no hace falta “cachearla” manualmente).
             return resp;
         }
     }
 
     static class BodyLoggingErrorHandler extends DefaultResponseErrorHandler {
-
-        // Spring 6+: sobreescribir la nueva firma evita el warning por método deprecado
         public void handleError(ClientHttpResponse response, HttpStatusCode statusCode) throws IOException {
             String body = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
             HttpHeaders headers = response.getHeaders();
 
             LoggerFactory.getLogger("HTTP")
-                .error("Hacienda ERROR {}. Headers: {}. Body: {}", statusCode, headers, body);
+                .error("API ERROR {}. Headers: {}. Body: {}", statusCode, headers, body);
 
-            // Delegar en el comportamiento estándar (lanzará HttpClientErrorException/HttpServerErrorException)
             super.handleError(response);
         }
     }
