@@ -34,9 +34,11 @@
 <!-- ============================================================ -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" th:fragment="header">
 	<div class="container-fluid">
-		<!-- Logo -->
-		<a class="navbar-brand fw-bold" th:href="@{/}">
-			<i class="fas fa-receipt me-2"></i>SAMYX
+		<!-- Logo con Imagen -->
+		<a class="navbar-brand" th:href="@{/}" style="display: flex; align-items: center; gap: 0.5rem;">
+			<img th:src="@{/images/logo.png}"
+					 alt="SAMYX"
+					 style="height: 35px; width: auto; object-fit: contain;">
 		</a>
 
 		<!-- Toggle Button Mobile -->
@@ -47,12 +49,6 @@
 		<!-- Menu Items -->
 		<div class="collapse navbar-collapse" id="navbarMenu">
 			<ul class="navbar-nav me-auto">
-				<!-- Inicio -->
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/}">
-						<i class="fas fa-home"></i> <span th:text="#{txt.inicio}">Inicio</span>
-					</a>
-				</li>
 
 				<!-- Clientes -->
 				<li class="nav-item" th:if="${session.SESSION_EMPRESA_ID != null}">
@@ -329,7 +325,28 @@
 		gtag('js', new Date());
 		gtag('config', 'G-4NVHCBS0P6');
 	</script>
+
 </div>
+
 
 </body>
 </html>
+
+
+<style>
+	/* Estilos adicionales para el logo */
+	.navbar-brand img {
+		transition: transform 0.3s ease;
+	}
+
+	.navbar-brand:hover img {
+		transform: scale(1.05);
+	}
+
+	/* Para asegurar que el logo se vea bien en móvil */
+	@media (max-width: 768px) {
+		.navbar-brand img {
+			height: 30px;
+		}
+	}
+</style>
