@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
 <head th:replace="~{layout/layout :: head}">
   <title>Dashboard - SAMYX</title>
 </head>
@@ -8,229 +8,369 @@
   <!-- Header -->
   <header th:replace="~{layout/layout :: header}"></header>
 
-  <!-- Fragmento aside vacío para compatibilidad -->
-  <aside th:fragment="sidebar" style="display: none;"></aside>
+  <!-- Main Content -->
+  <main class="dashboard-main">
 
-  <!-- Page wrapper -->
-  <div class="page-wrapper">
-    <!-- Hero Section -->
-    <div class="dashboard-hero">
-      <div class="hero-content">
-        <h1 class="hero-title">
-          Bienvenido a <span class="text-gradient">SAMYX</span>
-        </h1>
-        <p class="hero-subtitle">
-          Sistema de Facturación Electrónica
-        </p>
-        <div class="hero-date">
-          <i class="fas fa-calendar-alt"></i>
-          <span id="currentDate"></span>
+    <!-- Hero Section con Gradiente Animado -->
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content-wrapper">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <div class="hero-text">
+                <h1 class="hero-title animate-fade-in">
+                  Bienvenido a <span class="brand-gradient">SAMYX</span>
+                </h1>
+                <p class="hero-subtitle animate-fade-in-delay-1">
+                  Sistema de Facturación Electrónica de Costa Rica
+                </p>
+                <div class="hero-info animate-fade-in-delay-2">
+                  <div class="info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                  </div>
+                  <div class="info-item" th:if="${session.SESSION_DATOS_EMPRESA_NOMBRE != null}">
+                    <i class="fas fa-building"></i>
+                    <span th:text="${session.SESSION_DATOS_EMPRESA_NOMBRE}">Mi Empresa</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 d-none d-lg-block">
+              <div class="hero-illustration">
+                <div class="floating-card card-1">
+                  <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="floating-card card-2">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="floating-card card-3">
+                  <i class="fas fa-users"></i>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="hero-pattern"></div>
+      <div class="hero-wave">
+        <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#f8f9fc" fill-opacity="1" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <div class="container-fluid">
+
+        <!-- Quick Stats Section -->
+        <section class="quick-stats-section" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-chart-pie"></i>
+              Resumen de Comprobantes
+            </h2>
+            <div class="section-actions">
+              <button class="btn-refresh" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i>
+                Actualizar
+              </button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <!-- Factura Electrónica -->
+            <div class="stat-card card-purple">
+              <div class="stat-card-header">
+                <div class="stat-icon">
+                  <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="stat-badge">Principal</div>
+              </div>
+              <div class="stat-card-body">
+                <h3 class="stat-number" th:text="${tfe ?: '0'}">0</h3>
+                <p class="stat-label">Facturas Electrónicas</p>
+                <div class="stat-progress-bar">
+                  <div class="stat-progress-fill" th:style="'width: ' + ${pfe ?: '0'} + '%'"></div>
+                </div>
+                <div class="stat-footer">
+                  <span class="stat-percentage" th:text="${pfe ?: '0'} + '%'">0%</span>
+                  <span class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notas de Crédito -->
+            <div class="stat-card card-green">
+              <div class="stat-card-header">
+                <div class="stat-icon">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+              </div>
+              <div class="stat-card-body">
+                <h3 class="stat-number" th:text="${tnc ?: '0'}">0</h3>
+                <p class="stat-label">Notas de Crédito</p>
+                <div class="stat-progress-bar">
+                  <div class="stat-progress-fill" th:style="'width: ' + ${pnc ?: '0'} + '%'"></div>
+                </div>
+                <div class="stat-footer">
+                  <span class="stat-percentage" th:text="${pnc ?: '0'} + '%'">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notas de Débito -->
+            <div class="stat-card card-blue">
+              <div class="stat-card-header">
+                <div class="stat-icon">
+                  <i class="fas fa-receipt"></i>
+                </div>
+              </div>
+              <div class="stat-card-body">
+                <h3 class="stat-number" th:text="${tnd ?: '0'}">0</h3>
+                <p class="stat-label">Notas de Débito</p>
+                <div class="stat-progress-bar">
+                  <div class="stat-progress-fill" th:style="'width: ' + ${pnd ?: '0'} + '%'"></div>
+                </div>
+                <div class="stat-footer">
+                  <span class="stat-percentage" th:text="${pnd ?: '0'} + '%'">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tiquetes Electrónicos -->
+            <div class="stat-card card-orange">
+              <div class="stat-card-header">
+                <div class="stat-icon">
+                  <i class="fas fa-ticket-alt"></i>
+                </div>
+              </div>
+              <div class="stat-card-body">
+                <h3 class="stat-number" th:text="${tte ?: '0'}">0</h3>
+                <p class="stat-label">Tiquetes Electrónicos</p>
+                <div class="stat-progress-bar">
+                  <div class="stat-progress-fill" th:style="'width: ' + ${pte ?: '0'} + '%'"></div>
+                </div>
+                <div class="stat-footer">
+                  <span class="stat-percentage" th:text="${pte ?: '0'} + '%'">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Facturas de Compra -->
+            <div class="stat-card card-cyan">
+              <div class="stat-card-header">
+                <div class="stat-icon">
+                  <i class="fas fa-shopping-cart"></i>
+                </div>
+              </div>
+              <div class="stat-card-body">
+                <h3 class="stat-number" th:text="${tfec ?: '0'}">0</h3>
+                <p class="stat-label">Facturas de Compra</p>
+                <div class="stat-progress-bar">
+                  <div class="stat-progress-fill" th:style="'width: ' + ${pfec ?: '0'} + '%'"></div>
+                </div>
+                <div class="stat-footer">
+                  <span class="stat-percentage" th:text="${pfec ?: '0'} + '%'">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Facturas de Exportación -->
+            <div class="stat-card card-teal">
+              <div class="stat-card-header">
+                <div class="stat-icon">
+                  <i class="fas fa-globe-americas"></i>
+                </div>
+              </div>
+              <div class="stat-card-body">
+                <h3 class="stat-number" th:text="${tfee ?: '0'}">0</h3>
+                <p class="stat-label">Facturas Exportación</p>
+                <div class="stat-progress-bar">
+                  <div class="stat-progress-fill" th:style="'width: ' + ${pfee ?: '0'} + '%'"></div>
+                </div>
+                <div class="stat-footer">
+                  <span class="stat-percentage" th:text="${pfee ?: '0'} + '%'">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Actions Section -->
+        <section class="quick-actions-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-bolt"></i>
+              Accesos Rápidos
+            </h2>
+          </div>
+
+          <div class="actions-grid">
+            <!-- Facturar -->
+            <a th:href="@{/facturar/?f=all}" class="action-card action-primary">
+              <div class="action-icon-wrapper">
+                <div class="action-icon">
+                  <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <div class="action-glow"></div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">Facturar</h3>
+                <p class="action-description">Crear nueva factura electrónica</p>
+              </div>
+              <div class="action-arrow">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </a>
+
+            <!-- Clientes -->
+            <a th:href="@{/clientes/}" class="action-card action-success">
+              <div class="action-icon-wrapper">
+                <div class="action-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="action-glow"></div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">Clientes</h3>
+                <p class="action-description">Administrar cartera de clientes</p>
+              </div>
+              <div class="action-arrow">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </a>
+
+            <!-- Productos -->
+            <a th:href="@{/productos/}" class="action-card action-info" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+              <div class="action-icon-wrapper">
+                <div class="action-icon">
+                  <i class="fas fa-boxes"></i>
+                </div>
+                <div class="action-glow"></div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">Productos</h3>
+                <p class="action-description">Gestionar inventario</p>
+              </div>
+              <div class="action-arrow">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </a>
+
+            <!-- Comprobantes -->
+            <a th:href="@{/fe-documentos/}" class="action-card action-warning" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+              <div class="action-icon-wrapper">
+                <div class="action-icon">
+                  <i class="fas fa-folder-open"></i>
+                </div>
+                <div class="action-glow"></div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">Comprobantes</h3>
+                <p class="action-description">Ver documentos electrónicos</p>
+              </div>
+              <div class="action-arrow">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </a>
+
+            <!-- Mensaje Receptor -->
+            <a th:href="@{/mensaje-receptor/}" class="action-card action-danger" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+              <div class="action-icon-wrapper">
+                <div class="action-icon">
+                  <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <div class="action-glow"></div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">Mensaje Receptor</h3>
+                <p class="action-description">Gestionar mensajes MH</p>
+              </div>
+              <div class="action-arrow">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </a>
+
+            <!-- Reportes -->
+            <a th:href="@{/reportes/ventas}" class="action-card action-purple" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+              <div class="action-icon-wrapper">
+                <div class="action-icon">
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="action-glow"></div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">Reportes</h3>
+                <p class="action-description">Análisis y estadísticas</p>
+              </div>
+              <div class="action-arrow">
+                <i class="fas fa-arrow-right"></i>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- Additional Info Section -->
+        <section class="info-cards-section">
+          <div class="row g-4">
+            <!-- Ayuda Rápida -->
+            <div class="col-lg-4">
+              <div class="info-card info-card-help">
+                <div class="info-card-icon">
+                  <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="info-card-content">
+                  <h3 class="info-card-title">¿Necesitas ayuda?</h3>
+                  <p class="info-card-text">Consulta nuestra documentación o contáctanos</p>
+                  <a href="#" class="info-card-link">
+                    Ver guías <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tips del Sistema -->
+            <div class="col-lg-4">
+              <div class="info-card info-card-tips">
+                <div class="info-card-icon">
+                  <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="info-card-content">
+                  <h3 class="info-card-title">Tips del Sistema</h3>
+                  <p class="info-card-text">Usa atajos de teclado para trabajar más rápido</p>
+                  <a href="#" class="info-card-link">
+                    Ver tips <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actualizaciones -->
+            <div class="col-lg-4">
+              <div class="info-card info-card-updates">
+                <div class="info-card-icon">
+                  <i class="fas fa-bell"></i>
+                </div>
+                <div class="info-card-content">
+                  <h3 class="info-card-title">Actualizaciones</h3>
+                  <p class="info-card-text">Mantente al día con las últimas mejoras</p>
+                  <a href="#" class="info-card-link">
+                    Ver novedades <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
     </div>
 
-    <!-- Container -->
-    <div class="container-fluid">
-      <!-- Estadísticas de Comprobantes -->
-      <div class="stats-section" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-        <h2 class="section-title">
-          <i class="fas fa-chart-line"></i>
-          Resumen de Comprobantes
-        </h2>
-
-        <div class="stats-grid">
-          <!-- Facturas Electrónicas -->
-          <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-              <i class="fas fa-file-invoice"></i>
-            </div>
-            <div class="stat-content">
-              <h3 class="stat-value" th:text="${tfe ?: '0'}">0</h3>
-              <p class="stat-label">Facturas Electrónicas</p>
-              <div class="stat-progress">
-                <div class="progress-bar"
-                     th:style="'width: ' + ${pfe ?: '0'} + '%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);'">
-                </div>
-              </div>
-              <span class="stat-percentage" th:text="${pfe ?: '0'} + '%'">0%</span>
-            </div>
-          </div>
-
-          <!-- Notas de Débito -->
-          <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-              <i class="fas fa-file-alt"></i>
-            </div>
-            <div class="stat-content">
-              <h3 class="stat-value" th:text="${tnd ?: '0'}">0</h3>
-              <p class="stat-label">Notas de Débito</p>
-              <div class="stat-progress">
-                <div class="progress-bar"
-                     th:style="'width: ' + ${pnd ?: '0'} + '%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);'">
-                </div>
-              </div>
-              <span class="stat-percentage" th:text="${pnd ?: '0'} + '%'">0%</span>
-            </div>
-          </div>
-
-          <!-- Notas de Crédito -->
-          <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-              <i class="fas fa-file-invoice-dollar"></i>
-            </div>
-            <div class="stat-content">
-              <h3 class="stat-value" th:text="${tnc ?: '0'}">0</h3>
-              <p class="stat-label">Notas de Crédito</p>
-              <div class="stat-progress">
-                <div class="progress-bar"
-                     th:style="'width: ' + ${pnc ?: '0'} + '%; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);'">
-                </div>
-              </div>
-              <span class="stat-percentage" th:text="${pnc ?: '0'} + '%'">0%</span>
-            </div>
-          </div>
-
-          <!-- Tiquetes Electrónicos -->
-          <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-              <i class="fas fa-receipt"></i>
-            </div>
-            <div class="stat-content">
-              <h3 class="stat-value" th:text="${tte ?: '0'}">0</h3>
-              <p class="stat-label">Tiquetes Electrónicos</p>
-              <div class="stat-progress">
-                <div class="progress-bar"
-                     th:style="'width: ' + ${pte ?: '0'} + '%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);'">
-                </div>
-              </div>
-              <span class="stat-percentage" th:text="${pte ?: '0'} + '%'">0%</span>
-            </div>
-          </div>
-
-          <!-- Factura Electrónica Compra -->
-          <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);">
-              <i class="fas fa-shopping-cart"></i>
-            </div>
-            <div class="stat-content">
-              <h3 class="stat-value" th:text="${tfec ?: '0'}">0</h3>
-              <p class="stat-label">Facturas de Compra</p>
-              <div class="stat-progress">
-                <div class="progress-bar"
-                     th:style="'width: ' + ${pfec ?: '0'} + '%; background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);'">
-                </div>
-              </div>
-              <span class="stat-percentage" th:text="${pfec ?: '0'} + '%'">0%</span>
-            </div>
-          </div>
-
-          <!-- Factura Electrónica Exportación -->
-          <div class="stat-card">
-            <div class="stat-icon" style="background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);">
-              <i class="fas fa-globe-americas"></i>
-            </div>
-            <div class="stat-content">
-              <h3 class="stat-value" th:text="${tfee ?: '0'}">0</h3>
-              <p class="stat-label">Facturas de Exportación</p>
-              <div class="stat-progress">
-                <div class="progress-bar"
-                     th:style="'width: ' + ${pfee ?: '0'} + '%; background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);'">
-                </div>
-              </div>
-              <span class="stat-percentage" th:text="${pfee ?: '0'} + '%'">0%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Menú Principal -->
-      <div class="main-menu-section">
-        <h2 class="section-title">
-          <i class="fas fa-th-large"></i>
-          Accesos Rápidos
-        </h2>
-
-        <div class="menu-grid">
-          <!-- Clientes -->
-          <a th:href="@{/clientes/}" class="menu-card">
-            <div class="menu-card-content">
-              <div class="menu-icon-wrapper" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <i class="fas fa-users"></i>
-              </div>
-              <h3 class="menu-title">Clientes</h3>
-              <p class="menu-description">Gestiona tu cartera de clientes</p>
-              <span class="menu-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </span>
-            </div>
-            <div class="menu-card-bg"></div>
-          </a>
-
-          <!-- Productos -->
-          <a th:href="@{/productos/}" class="menu-card" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-            <div class="menu-card-content">
-              <div class="menu-icon-wrapper" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                <i class="fas fa-boxes"></i>
-              </div>
-              <h3 class="menu-title">Productos</h3>
-              <p class="menu-description">Administra tu inventario</p>
-              <span class="menu-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </span>
-            </div>
-            <div class="menu-card-bg"></div>
-          </a>
-
-          <!-- Facturar -->
-          <a th:href="@{/facturar/?f=all}" class="menu-card">
-            <div class="menu-card-content">
-              <div class="menu-icon-wrapper" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                <i class="fas fa-file-invoice"></i>
-              </div>
-              <h3 class="menu-title">Facturar</h3>
-              <p class="menu-description">Crea nuevas facturas</p>
-              <span class="menu-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </span>
-            </div>
-            <div class="menu-card-bg"></div>
-          </a>
-
-          <!-- Comprobantes -->
-          <a th:href="@{/fe-documentos/}" class="menu-card" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-            <div class="menu-card-content">
-              <div class="menu-icon-wrapper" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                <i class="fas fa-folder-open"></i>
-              </div>
-              <h3 class="menu-title">Comprobantes</h3>
-              <p class="menu-description">Documentos electrónicos</p>
-              <span class="menu-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </span>
-            </div>
-            <div class="menu-card-bg"></div>
-          </a>
-
-          <!-- Mensaje Receptor -->
-          <a th:href="@{/mensaje-receptor/}" class="menu-card" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-            <div class="menu-card-content">
-              <div class="menu-icon-wrapper" style="background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);">
-                <i class="fas fa-envelope-open-text"></i>
-              </div>
-              <h3 class="menu-title">Mensaje Receptor</h3>
-              <p class="menu-description">Gestión de mensajes</p>
-              <span class="menu-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </span>
-            </div>
-            <div class="menu-card-bg"></div>
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </div>
+  </main>
 
   <!-- Footer -->
   <footer th:replace="~{layout/layout :: footer}"></footer>
@@ -240,9 +380,76 @@
 <div th:replace="~{layout/layout :: scripts}"></div>
 
 <!-- CSS específico de esta página -->
-<link th:href="@{/css/pages/dashboard.css}" rel="stylesheet" />
+<link th:href="@{/css/pages/dashboard.css}" rel="stylesheet">
 
 <!-- JavaScript específico de esta página -->
-<script th:src="@{/js/pages/dashboard.js}"></script>
+<script>
+  // Actualizar fecha actual
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentDateElement = document.getElementById('currentDate');
+    if (currentDateElement) {
+      const now = new Date();
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      currentDateElement.textContent = now.toLocaleDateString('es-CR', options);
+    }
+
+    // Animación de números
+    animateNumbers();
+
+    // Parallax effect en hero
+    setupParallax();
+  });
+
+  // Animar contadores
+  function animateNumbers() {
+    const numbers = document.querySelectorAll('.stat-number');
+    numbers.forEach(number => {
+      const target = parseInt(number.textContent);
+      if (isNaN(target)) return;
+
+      let current = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          number.textContent = target;
+          clearInterval(timer);
+        } else {
+          number.textContent = Math.floor(current);
+        }
+      }, 20);
+    });
+  }
+
+  // Efecto parallax suave
+  function setupParallax() {
+    const hero = document.querySelector('.hero-section');
+    if (!hero) return;
+
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      if (scrolled < 500) {
+        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+      }
+    });
+  }
+
+  // Hover effect en cards
+  document.querySelectorAll('.action-card, .stat-card').forEach(card => {
+    card.addEventListener('mouseenter', function(e) {
+      this.style.transform = 'translateY(-8px) scale(1.02)';
+    });
+
+    card.addEventListener('mouseleave', function(e) {
+      this.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+</script>
+
 </body>
 </html>
