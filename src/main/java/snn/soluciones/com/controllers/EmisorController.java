@@ -218,7 +218,7 @@ public class EmisorController {
   @GetMapping({"/actividades"})
   public String getActividad(Model model, Authentication auth, HttpSession session) {
     if (session.getAttribute("SESSION_EMPRESA_ID") != null) {
-      Long emisorId = Long.valueOf(Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString()));
+      Long emisorId = Long.parseLong(session.getAttribute("SESSION_EMPRESA_ID").toString());
       List<EmisorActividades> actividadesEmisor = this._emisorActividad.findAllByEmisorId(emisorId);
       model.addAttribute("actividadesEmisor", actividadesEmisor);
       return "emisor/actividades-economicas/index";
